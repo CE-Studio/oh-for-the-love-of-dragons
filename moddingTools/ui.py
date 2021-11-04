@@ -70,10 +70,60 @@ class buttonGang():
         rpos = 0
         for i in self.options:
             if i.click((rpos + pos[0], pos[1]), cpos):
-                print(h)
                 self.selected = h
                 return(True)
             rpos += 2
             rpos += i.w
             h += 1
+        return(False)
+
+class menu():
+    def __init__(self, options, bcol = (120, 120, 120), fcol = (255, 255, 255)):
+        self.labels = []
+        self.bcol = bcol
+        self.h = 0
+        self.w = 0
+        for i in options:
+            self.labels.append(text(i, fcol))
+            self.h += self.labels[-1].h
+            if self.w < self.labels[-1].w:
+                self.w = self.labels[-1].w
+
+    def rend(self, surface, pos):
+        i = pygame.Rect(pos, (self.w, self.h))
+        pygame.draw.rect(surface, self.bcol, i)
+        h = 0
+        for i in self.labels:
+            i.rend(surface, (pos[0], h + pos[1]))
+            h += i.h
+
+class menubar():
+    def __init__(self):
+        self.menubutton = button("File") 
+        self.modeswitch = buttonGang(("Node Graph", "Playtest"))
+        self.h = self.menubutton.h
+        self.menu = menu(("New", "Save", "Save As", "Complie and Export"))
+        self.showmenu = False
+
+    def rend(self, surface):
+        i = pygame.display.Info()
+        h = pygame.Rect((0, 0), (i.current_w, self.h))
+        pygame.draw.rect(surface, (180, 180, 180), h)
+        self.menubutton.rend(surface, (2, 0))
+        self.modeswitch.rend(surface, (i.current_w - self.modeswitch.w, 0))
+        if self.showmenu:
+            self.menu.rend(surface, (2, self.h + 2))
+
+    def click(self, pos, button):
+        if button == 1:
+            if self.showmenu:
+                self.showmenu = False
+                return(True)
+            else:
+                if self.menubutton.click((2, 0), pos):
+                    self.showmenu = True
+                    return(True)
+                else:
+                    i = pygame.display.Info()
+                    return(self.modeswitch.click((i.current_w - self.modeswitch.w, 0), pos))
         return(False)
