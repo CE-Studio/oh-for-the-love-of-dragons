@@ -1,8 +1,13 @@
 ﻿import pygame, pickle, json, sys
 
+if sys.platform == "win32": #I hate that I need to do this to update the taskbar icon on Windows
+    import ctypes           #...Fuck Windows
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("cestudio.OFTLODscrpitwriter")
+
 pygame.init()
 i = pygame.display.Info()
 screen = pygame.display.set_mode((i.current_w - 100, i.current_h - 100), pygame.RESIZABLE)
+pygame.display.set_icon(pygame.image.load("icon.png"))
 pygame.display.set_caption("Scriptwriter")
 
 import ui
