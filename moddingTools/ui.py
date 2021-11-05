@@ -85,9 +85,8 @@ class menu():
         self.w = 0
         for i in options:
             self.labels.append(text(i, fcol))
+            self.w = max(self.w, self.labels[-1].w)
             self.h += self.labels[-1].h
-            if self.w < self.labels[-1].w:
-                self.w = self.labels[-1].w
 
     def rend(self, surface, pos):
         i = pygame.Rect(pos, (self.w, self.h))
@@ -127,3 +126,75 @@ class menubar():
                     i = pygame.display.Info()
                     return(self.modeswitch.click((i.current_w - self.modeswitch.w, 0), pos))
         return(False)
+
+class socket():
+    def __init__(self, input, col = (200, 200, 200), bcol=(200, 200, 200)):
+        self.input = input
+        self.col = col
+        self.bcol = bcol
+
+    def rend(self, surface, pos):
+        if self.input:
+            p = (pos, (-14 + pos[0], pos[1]),
+                 (-14 + pos[0], 4 + pos[1]), (-4 + pos[0], 4 + pos[1]),
+                 (-4 + pos[0], 10 + pos[1]), (-14 + pos[0], 10 + pos[1]),
+                 (-14 + pos[0], 14 + pos[1]), (pos[0], 14 + pos[1]))
+        else:
+            p = (pos, (14 + pos[0], pos[1]),
+                 (14 + pos[0], 4 + pos[1]), (4 + pos[0], 4 + pos[1]),
+                 (4 + pos[0], 10 + pos[1]), (14 + pos[0], 10 + pos[1]),
+                 (14 + pos[0], 14 + pos[1]), (pos[0], 14 + pos[1]))
+        pygame.draw.polygon(surface, self.col, p)
+        pygame.draw.polygon(surface, self.bcol, p, 1)
+
+class output():
+    def __init__(self, text, color = (255, 255, 255)):
+        self.text = text
+        self.w, self.h = textfont.size(text)
+        self.w += 4
+        self.h += 1
+        self.color = color
+        self.socket = socket(False)
+
+    def rend(self, surface, pos):
+        surface.blit(textfont.render(self.text, True, self.color), (pos[0] + 2, pos[1]))
+        self.socket.rend(surface, (pos[0] + self.w, pos[1] + 3))
+
+class node():
+    def __init__(self, pos):
+        self.parts = []
+        self.connections = []
+        self.w, self.h = (0, 0)
+        self.bgcol = (60, 60, 60)
+        self.populate()
+        self.update()
+        self.pos = pos
+
+    def populate(self):
+        pass
+
+    def addPart(self, part):
+        part.parent = self
+        self.parts.append(part)
+        self.w = max(self.w, part.w)
+        self.h += part.h
+
+    def update(self):
+        for i in self.parts:
+            i.w = self.w
+
+    def rend(self, surface, scrollpos):
+        rp = (scrollpos[0] + self.pos[0], scrollpos[1] + self.pos[1])
+        r = pygame.Rect(rp, (self.w, self.h))
+        pygame.draw.rect(surface, self.bgcol, r)
+        h = 0
+        for i in self.parts:
+            i.rend(surface, (rp[0], rp[1] + h))
+            h += i.h
+
+class startNode(node):
+    def populate(self):
+        self.bgcol = (60, 100, 60)
+        #self.addPart(text(""))
+        self.addPart(output("Start"))
+        #self.addPart(text(""))

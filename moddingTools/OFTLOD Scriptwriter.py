@@ -1,4 +1,6 @@
-﻿import pygame, pickle, json, sys
+﻿import pygame, pickle, json, sys, copy
+def clamp(n, smallest, largest): 
+    return max(smallest, min(n, largest))
 
 if sys.platform == "win32": #I hate that I need to do this to update the taskbar icon on Windows
     import ctypes           #...Fuck Windows
@@ -16,6 +18,29 @@ menu = ui.menubar()
 menu.rend(screen)
 pygame.display.flip()
 
+scrollpos = (100, 100)
+scroll = False
+scrolltrack = ()
+scrollhold = (100, 100)
+
+test = ui.startNode((10, 10))
+
+def draw():
+    a = pygame.display.Info()
+    screen.fill((15, 15, 15))
+    pygame.draw.line(screen, (255, 0, 0), (scrollpos[0], 0), (scrollpos[0], a.current_h))
+    pygame.draw.line(screen, (0, 0, 255), (0, scrollpos[1]), (a.current_w, scrollpos[1]))
+    tx = ui.textfont.render(str(scrollpos[0]), True, (255, 100, 100))
+    txw = ui.textfont.size(str(scrollpos[0]))[0] + 2
+    ty = ui.textfont.render(str(scrollpos[1]), True, (100, 100, 255))
+    screen.blit(tx, (clamp(scrollpos[0] + 2, 2, a.current_w - txw), 19))
+    screen.blit(ty, (2, clamp(scrollpos[1] + 2, 32, a.current_h - 19)))
+
+    test.rend(screen, scrollpos)
+
+    menu.rend(screen)
+    pygame.display.flip()
+
 def clickcheck(e):
     menu.click(e.pos, e.button)
 
@@ -32,7 +57,20 @@ while True:
         screen = pygame.display.set_mode(size, pygame.RESIZABLE)
     elif e.type == pygame.MOUSEBUTTONDOWN:
         clickcheck(e)
+        if e.button == 2:
+            scroll = True
+            scrolltrack = e.pos
+            scrollhold = copy.copy(scrollpos)
+    elif e.type == pygame.MOUSEBUTTONUP:
+        if e.button == 2:
+            scroll = False
+    else:
+        pass
 
-    screen.fill((15, 15, 15))
-    menu.rend(screen)
-    pygame.display.flip()
+    if scroll:
+        i = pygame.mouse.get_pos()
+        x = scrollhold[0] + (i[0] - scrolltrack[0])
+        y = scrollhold[1] + (i[1] - scrolltrack[1])
+        scrollpos = (x, y)
+
+    draw()
