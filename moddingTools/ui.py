@@ -148,20 +148,46 @@ class socket():
         pygame.draw.polygon(surface, self.bcol, p, 1)
 
 class output():
-    def __init__(self, text, color = (255, 255, 255)):
+    def __init__(self, text, obj, color = (255, 255, 255)):
         self.text = text
+        self.obj = obj
         self.w, self.h = textfont.size(text)
         self.w += 4
         self.h += 1
         self.color = color
         self.socket = socket(False)
+        self.connectTo = False
 
     def rend(self, surface, pos):
         surface.blit(textfont.render(self.text, True, self.color), (pos[0] + 2, pos[1]))
         self.socket.rend(surface, (pos[0] + self.w, pos[1] + 3))
+        if not(self.connectTo == False):
+            i = self.connectTo
+            pygame.draw.line(surface, (0, 255, 0), (pos[0] + self.w + 7, pos[1] + 11), (i.pos[0] + spos[0] - 7, i.pos[1] + spos[1] + 11))
+
+    def click(self, pos, cpos):
+        pos = (pos[0] + self.w, pos[1] + 3)
+        if ((cpos[0] >= pos[0]) and
+            (cpos[1] >= pos[1]) and
+            (cpos[0] <= (pos[0] + 14)) and
+            (cpos[1] <= (pos[1] + 14))):
+            if self.connectTo == False:
+                return("con")
+            else:
+                self.connectTo = False
+                return(True)
+        return(False)
+
+    def compile(self):
+        if self.connectTo == False:
+            return(False)
+        else:
+            return('"' + self.obj + '":"' + str(self.connectTo.id) + '"')
 
 class node():
-    def __init__(self, pos):
+    def __init__(self, pos, id):
+        self.id = id
+        self.connectable = True
         self.parts = []
         self.connections = []
         self.w, self.h = (0, 0)
@@ -180,6 +206,7 @@ class node():
         self.h += part.h
 
     def update(self):
+        self.socket = socket(True)
         for i in self.parts:
             i.w = self.w
 
@@ -191,10 +218,40 @@ class node():
         for i in self.parts:
             i.rend(surface, (rp[0], rp[1] + h))
             h += i.h
+        if self.connectable:
+            self.socket.rend(surface, (rp[0], rp[1] + 3))
+
+    def click(self, cpos, con, spos):
+        if ((cpos[0] >= (self.pos[0] + spos[0])) and
+            (cpos[1] >= (self.pos[1] + spos[1])) and
+            (cpos[0] <= ((self.pos[0] + spos[0]) + self.w + 14)) and
+            (cpos[1] <= ((self.pos[1] + spos[1]) + self.h))):
+            if con:
+                if self.connectable:
+                    return(self)
+                else:
+                    return(False)
+            else:
+                j = 0
+                for i in self.parts:
+                    h = i.click((self.pos[0] + spos[0], self.pos[1] + spos[1] + j), cpos)
+                    if h == "con":
+                        return(i)
+                    elif h:
+                        return(True)
+                    else:
+                        pass
+                    j += i.h
+        return(False)
 
 class startNode(node):
     def populate(self):
+        self.connectable = False
         self.bgcol = (60, 100, 60)
-        #self.addPart(text(""))
-        self.addPart(output("Start"))
-        #self.addPart(text(""))
+        self.addPart(text(""))
+        self.addPart(output("     Start     ", "default"))
+        self.addPart(text(""))
+
+class testNode(node):
+    def populate(self):
+        self.addPart(output("test", "default"))

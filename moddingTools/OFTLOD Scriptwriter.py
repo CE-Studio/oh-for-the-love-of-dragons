@@ -22,10 +22,13 @@ scrollpos = (100, 100)
 scroll = False
 scrolltrack = ()
 scrollhold = (100, 100)
+connecting = False
+connector = False
 
-test = ui.startNode((10, 10))
+nodes = [ui.startNode((10, 10), 0), ui.testNode((200, 50), 1), ui.testNode((200, 10), 2)]
 
 def draw():
+    ui.spos = scrollpos
     a = pygame.display.Info()
     screen.fill((15, 15, 15))
     pygame.draw.line(screen, (255, 0, 0), (scrollpos[0], 0), (scrollpos[0], a.current_h))
@@ -36,13 +39,40 @@ def draw():
     screen.blit(tx, (clamp(scrollpos[0] + 2, 2, a.current_w - txw), 19))
     screen.blit(ty, (2, clamp(scrollpos[1] + 2, 32, a.current_h - 19)))
 
-    test.rend(screen, scrollpos)
+    for i in nodes:
+        i.rend(screen, scrollpos)
 
     menu.rend(screen)
     pygame.display.flip()
 
 def clickcheck(e):
-    menu.click(e.pos, e.button)
+    global connecting
+    global connector
+    if menu.click(e.pos, e.button):
+        return
+    if connecting:
+        for i in nodes:
+            h = i.click(e.pos, True, scrollpos)
+            if h == True:
+                return
+            if h == False:
+                pass
+            else:
+                connector.connectTo = h
+                connecting = False
+                return
+        connecting = False
+    else:
+        for i in nodes:
+            h = i.click(e.pos, False, scrollpos)
+            if h == True:
+                return
+            if h == False:
+                pass
+            else:
+                connecting = True
+                connector = h
+                return
 
 while True:
     e = pygame.event.wait()
@@ -56,8 +86,9 @@ while True:
             size[1] = 300
         screen = pygame.display.set_mode(size, pygame.RESIZABLE)
     elif e.type == pygame.MOUSEBUTTONDOWN:
-        clickcheck(e)
-        if e.button == 2:
+        if e.button == 1:
+            clickcheck(e)
+        elif e.button == 2:
             scroll = True
             scrolltrack = e.pos
             scrollhold = copy.copy(scrollpos)
