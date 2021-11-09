@@ -25,7 +25,7 @@ scrollhold = (100, 100)
 connecting = False
 connector = False
 
-nodes = [ui.startNode((10, 10), 0), ui.testNode((200, 50), 1), ui.testNode((200, 10), 2)]
+nodes = [ui.startNode((10, 10), 0), ui.dialougeNode((100, 100), 0)]
 
 def draw():
     ui.spos = scrollpos

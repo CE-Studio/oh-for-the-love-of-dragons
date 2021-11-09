@@ -244,6 +244,9 @@ class node():
                     j += i.h
         return(False)
 
+    def compile(self):
+        pass
+
 class startNode(node):
     def populate(self):
         self.connectable = False
@@ -252,6 +255,11 @@ class startNode(node):
         self.addPart(output("     Start     ", "default"))
         self.addPart(text(""))
 
-class testNode(node):
+class dialougeNode(node):
     def populate(self):
-        self.addPart(output("test", "default"))
+        self.addPart(text("Dialouge/choice"))
+        self.addPart(output("Option A", "target1"))
+        self.addPart(output("Option B", "target2"))
+        self.addPart(output("Option C", "target3"))
+        self.addPart(output("Option D", "target4"))
+        self.addPart(output("Timeout", "targetDefault"))
