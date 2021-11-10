@@ -40,7 +40,7 @@ def draw():
     screen.blit(ty, (2, clamp(scrollpos[1] + 2, 32, a.current_h - 19)))
 
     for i in nodes:
-        i.rend(screen, scrollpos)
+        i.rend(screen, scrollpos, connecting)
 
     menu.rend(screen)
     pygame.display.flip()
@@ -95,6 +95,10 @@ while True:
     elif e.type == pygame.MOUSEBUTTONUP:
         if e.button == 2:
             scroll = False
+    elif e.type == pygame.KEYDOWN:
+        if not(e.unicode == ""):
+            print(e)
+            print(e.unicode == "\b")
     else:
         pass
 

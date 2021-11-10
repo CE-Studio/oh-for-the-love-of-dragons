@@ -9,6 +9,9 @@ class text():
         self.color = color
         self.callback = callback
 
+    def update(self):
+        self.w, self.h = textfont.size(self.text)
+
     def rend(self, surface, pos):
         surface.blit(textfont.render(self.text, True, self.color), pos)
 
@@ -29,6 +32,10 @@ class button():
         self.label = text(label, fcol, callback)
         self.bcol = bcol
         self.scol = scol
+        self.w, self.h = self.label.w, self.label.h
+
+    def update(self):
+        self.label.update()
         self.w, self.h = self.label.w, self.label.h
 
     def rend(self, surface, pos, selected = False):
@@ -151,12 +158,17 @@ class output():
     def __init__(self, text, obj, color = (255, 255, 255)):
         self.text = text
         self.obj = obj
-        self.w, self.h = textfont.size(text)
+        self.w, self.h = textfont.size(self.text)
         self.w += 4
         self.h += 1
         self.color = color
         self.socket = socket(False)
         self.connectTo = False
+
+    def update(self):
+        self.w, self.h = textfont.size(self.text)
+        self.w += 4
+        self.h += 1
 
     def rend(self, surface, pos):
         surface.blit(textfont.render(self.text, True, self.color), (pos[0] + 2, pos[1]))
@@ -178,11 +190,66 @@ class output():
                 return(True)
         return(False)
 
-    def compile(self):
+    def compile(self, datadict):
         if self.connectTo == False:
+            datadict[str(self.obj)] = "END"
             return(False)
         else:
-            return('"' + self.obj + '":"' + str(self.connectTo.id) + '"')
+            datadict[str(self.obj)] = str(self.connectTo.id)
+            return(True)
+
+class textBox():
+    def __init__(self, label, obj, col = (255, 255, 255), bcol = (100, 100, 100), fcol = (255, 255, 255), scol = (60, 120, 120)):
+        self.label = text(label, col)
+        self.initcon()
+        self.text = text(self.content, fcol)
+        self.obj = obj
+        self.h = self.label.h
+        self.w = self.label.w + max(50, self.text.w) + 5
+        self.bcol = bcol
+        self.fcol = fcol
+        self.scol = scol
+        self.hlight = False
+        self.conthold = ""
+    
+    def initcon(self):
+        self.content = "test aaaaaaaaaaaaaa"
+
+    def sanitize(self, inp):
+        return(str(inp))
+
+    def update(self):
+        self.label.update()
+        self.text.update()
+        self.h = self.label.h
+        self.w = self.label.w + max(50, self.text.w) + 5
+
+    def rend(self, surface, pos):
+        self.label.rend(surface, pos)
+        r = pygame.Rect((pos[0] + self.label.w + 5, pos[1]), (self.w - self.label.w - 5, self.h))
+        if self.hlight:
+            pygame.draw.rect(surface, self.scol, r)
+        else:
+            pygame.draw.rect(surface, self.bcol, r)
+        self.text.rend(surface, (pos[0] + self.label.w + 5, pos[1]))
+
+    def click(self, pos, cpos):
+        ht = bool(self.hlight)
+        self.hlight = ((cpos[0] >= pos[0]) and
+                       (cpos[1] >= pos[1]) and
+                       (cpos[0] <= (pos[0] + self.w)) and
+                       (cpos[1] <= (pos[1] + self.h)))
+        if not(ht == self.hlight):
+            if self.hlight:
+                self.conthold = str(self.content)
+                self.text.text = self.conthold + "|"
+            else:
+                self.text.text = str(self.content)
+        return(self.hlight)
+
+    def keypress(self, key):
+        if self.hlight:
+            pass
 
 class node():
     def __init__(self, pos, id):
@@ -192,9 +259,11 @@ class node():
         self.connections = []
         self.w, self.h = (0, 0)
         self.bgcol = (60, 60, 60)
+        self.ccol = (20, 70, 70)
         self.populate()
         self.update()
         self.pos = pos
+        self.socket = socket(True)
 
     def populate(self):
         pass
@@ -206,14 +275,23 @@ class node():
         self.h += part.h
 
     def update(self):
-        self.socket = socket(True)
+        self.w = 0
+        self.h = 0
+        for i in self.parts:
+            i.update()
+            self.w = max(self.w, i.w)
+            self.h += i.h
         for i in self.parts:
             i.w = self.w
 
-    def rend(self, surface, scrollpos):
+    def rend(self, surface, scrollpos, con):
+        self.update()
         rp = (scrollpos[0] + self.pos[0], scrollpos[1] + self.pos[1])
         r = pygame.Rect(rp, (self.w, self.h))
-        pygame.draw.rect(surface, self.bgcol, r)
+        if self.connectable and con:
+            pygame.draw.rect(surface, self.ccol, r)
+        else:
+            pygame.draw.rect(surface, self.bgcol, r)
         h = 0
         for i in self.parts:
             i.rend(surface, (rp[0], rp[1] + h))
@@ -222,6 +300,7 @@ class node():
             self.socket.rend(surface, (rp[0], rp[1] + 3))
 
     def click(self, cpos, con, spos):
+        t = False
         if ((cpos[0] >= (self.pos[0] + spos[0])) and
             (cpos[1] >= (self.pos[1] + spos[1])) and
             (cpos[0] <= ((self.pos[0] + spos[0]) + self.w + 14)) and
@@ -238,11 +317,11 @@ class node():
                     if h == "con":
                         return(i)
                     elif h:
-                        return(True)
+                        t = True
                     else:
                         pass
                     j += i.h
-        return(False)
+        return(t)
 
     def compile(self):
         pass
@@ -258,6 +337,7 @@ class startNode(node):
 class dialougeNode(node):
     def populate(self):
         self.addPart(text("Dialouge/choice"))
+        self.addPart(textBox("aaaaaaaaaa test", "test"))
         self.addPart(output("Option A", "target1"))
         self.addPart(output("Option B", "target2"))
         self.addPart(output("Option C", "target3"))
