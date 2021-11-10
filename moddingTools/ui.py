@@ -4,8 +4,8 @@ textfont = pygame.font.Font("OpenSans-Regular.ttf", 14)
 
 class text():
     def __init__(self, text, color = (255, 255, 255), callback = None):
-        self.text = text
-        self.w, self.h = textfont.size(text)
+        self.text = str(text)
+        self.w, self.h = textfont.size(self.text)
         self.color = color
         self.callback = callback
 
@@ -26,6 +26,9 @@ class text():
                 return(self.callback(cpos))
         else:
             return(False)
+
+    def keypress(self, inp):
+        pass
 
 class button():
     def __init__(self, label, bcol = (120, 120, 120), fcol = (255, 255, 255), scol = (95, 159, 172), callback = None):
@@ -49,6 +52,9 @@ class button():
 
     def click(self, pos, cpos):
         return(self.label.click(pos, cpos))
+
+    def keypress(self, inp):
+        pass
 
 class buttonGang():
     def __init__(self, options, bcol = (120, 120, 120), fcol = (255, 255, 255), scol = (95, 159, 172), default = 0):
@@ -190,6 +196,9 @@ class output():
                 return(True)
         return(False)
 
+    def keypress(self, inp):
+        pass
+
     def compile(self, datadict):
         if self.connectTo == False:
             datadict[str(self.obj)] = "END"
@@ -213,7 +222,7 @@ class textBox():
         self.conthold = ""
     
     def initcon(self):
-        self.content = "test aaaaaaaaaaaaaa"
+        self.content = ""
 
     def sanitize(self, inp):
         return(str(inp))
@@ -244,12 +253,40 @@ class textBox():
                 self.conthold = str(self.content)
                 self.text.text = self.conthold + "|"
             else:
+                self.content = self.sanitize(self.conthold)
                 self.text.text = str(self.content)
         return(self.hlight)
 
     def keypress(self, key):
         if self.hlight:
-            pass
+            if key == "\b":
+                self.conthold = self.conthold[:-1]
+                self.text.text = self.conthold + "|"
+            elif key == "\r":
+                pass
+            else:
+                self.conthold += key
+                self.text.text = self.conthold + "|"
+
+class floatBox(textBox):
+    def initcon(self):
+        self.content = 0.0
+
+    def sanitize(self, inp):
+        try:
+            return(float(inp))
+        except:
+            return(self.content)
+
+class intBox(textBox):
+    def initcon(self):
+        self.content = 0
+
+    def sanitize(self, inp):
+        try:
+            return(int(inp))
+        except:
+            return(self.content)
 
 class node():
     def __init__(self, pos, id):
@@ -323,6 +360,15 @@ class node():
                     j += i.h
         return(t)
 
+    def keypress(self, inp):
+        cpos = pygame.mouse.get_pos()
+        if ((cpos[0] >= (self.pos[0] + spos[0])) and
+            (cpos[1] >= (self.pos[1] + spos[1])) and
+            (cpos[0] <= ((self.pos[0] + spos[0]) + self.w + 14)) and
+            (cpos[1] <= ((self.pos[1] + spos[1]) + self.h))):
+            for i in self.parts:
+                i.keypress(inp)
+
     def compile(self):
         pass
 
@@ -337,7 +383,9 @@ class startNode(node):
 class dialougeNode(node):
     def populate(self):
         self.addPart(text("Dialouge/choice"))
-        self.addPart(textBox("aaaaaaaaaa test", "test"))
+        self.addPart(textBox("str test", "test"))
+        self.addPart(floatBox("flt test", "test"))
+        self.addPart(intBox("int test", "test"))
         self.addPart(output("Option A", "target1"))
         self.addPart(output("Option B", "target2"))
         self.addPart(output("Option C", "target3"))

@@ -28,7 +28,6 @@ connector = False
 nodes = [ui.startNode((10, 10), 0), ui.dialougeNode((100, 100), 0)]
 
 def draw():
-    ui.spos = scrollpos
     a = pygame.display.Info()
     screen.fill((15, 15, 15))
     pygame.draw.line(screen, (255, 0, 0), (scrollpos[0], 0), (scrollpos[0], a.current_h))
@@ -48,6 +47,9 @@ def draw():
 def clickcheck(e):
     global connecting
     global connector
+
+    ui.spos = scrollpos
+
     if menu.click(e.pos, e.button):
         return
     if connecting:
@@ -97,8 +99,8 @@ while True:
             scroll = False
     elif e.type == pygame.KEYDOWN:
         if not(e.unicode == ""):
-            print(e)
-            print(e.unicode == "\b")
+            for i in nodes:
+                i.keypress(e.unicode)
     else:
         pass
 
