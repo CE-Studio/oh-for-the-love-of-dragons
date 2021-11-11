@@ -489,13 +489,13 @@ class startNode(node):
         self.addPart(output("     Start     ", "default"))
         self.addPart(text(""))
 
-class dialougeNode(node):
+class dialogueNode(node):
     def populate(self):
-        self.addPart(text("Dialouge/choice"))
+        self.addPart(text("Dialogue/choice"))
         self.addPart(textBox("Character", ""))
         self.addPart(textBox("Animation", ""))
         self.addPart(floatBox("Timeout", ""))
-        self.addPart(textList("Dialouge", ""))
+        self.addPart(textList("dialogue", ""))
         self.addPart(textBox("Question", ""))
         self.addPart(textBox("Answer A", ""))
         self.addPart(textBox("Answer B", ""))
@@ -620,6 +620,7 @@ class dayNode(node):
 class sceneNode(node):
     def populate(self):
         self.addPart(text("Scene transition"))
+        self.addPart(textBox("Scene", ""))
         self.addPart(textList("Characters", ""))
         self.addPart(boolList("Sides", ""))
         self.addPart(output("Target", ""))

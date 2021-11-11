@@ -25,7 +25,7 @@ scrollhold = (100, 100)
 connecting = False
 connector = False
 
-rclickTitles = ("Dialouge/choice",
+rclickTitles = ("Dialogue/choice",
                 "Set variables",
                 "var == var (str)",
                 "var == var (int)",
@@ -41,7 +41,7 @@ rclickTitles = ("Dialouge/choice",
                 "Scene transition",
                 "Music transition")
 
-rclickClasses = (ui.dialougeNode,
+rclickClasses = (ui.dialogueNode,
                  ui.setVarNode,             
                  ui.varVarStrNode,
                  ui.varVarIntNode,
