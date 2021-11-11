@@ -25,7 +25,43 @@ scrollhold = (100, 100)
 connecting = False
 connector = False
 
-nodes = [ui.startNode((10, 10), 0), ui.dialougeNode((100, 100), 0)]
+rclickTitles = ("Dialouge/choice",
+                "Set variables",
+                "var == var (str)",
+                "var == var (int)",
+                "var == var (float)",
+                "var == var (bool)",
+                "var == var (inventory)",
+                "var == value (str)",
+                "var == value (int)",
+                "var == value (float)",
+                "var == value (bool)",
+                "var == value (inventory)",
+                "Day transition",
+                "Scene transition",
+                "Music transition")
+
+rclickClasses = (ui.dialougeNode,
+                 ui.setVarNode,             
+                 ui.varVarStrNode,
+                 ui.varVarIntNode,
+                 ui.varVarFloatNode,
+                 ui.varVarBoolNode,
+                 ui.varVarInvNode,
+                 ui.varValStrNode,
+                 ui.varValIntNode,
+                 ui.varValFloatNode,
+                 ui.varValBoolNode,
+                 ui.varValInvNode,
+                 ui.dayNode,
+                 ui.sceneNode,
+                 ui.musicNode)
+
+rclickMenu = ui.menu(rclickTitles)
+rclick = False
+rclickpos = (0, 0)
+
+nodes = [ui.startNode((10, 10), 0)]
 
 def draw():
     a = pygame.display.Info()
@@ -42,13 +78,15 @@ def draw():
         i.rend(screen, scrollpos, connecting)
 
     menu.rend(screen)
+
+    if rclick:
+        rclickMenu.rend(screen, rclickpos)
+
     pygame.display.flip()
 
 def clickcheck(e):
     global connecting
     global connector
-
-    ui.spos = scrollpos
 
     if menu.click(e.pos, e.button):
         return
@@ -77,6 +115,7 @@ def clickcheck(e):
                 return
 
 while True:
+    ui.spos = scrollpos
     e = pygame.event.wait()
     if e.type == pygame.QUIT:
         sys.exit(0)
@@ -89,11 +128,20 @@ while True:
         screen = pygame.display.set_mode(size, pygame.RESIZABLE)
     elif e.type == pygame.MOUSEBUTTONDOWN:
         if e.button == 1:
-            clickcheck(e)
+            if rclick:
+                rclick = False
+                a = rclickMenu.click(rclickpos, e.pos)
+                if not(a is False):
+                    nodes.append(rclickClasses[a]((e.pos[0] - scrollpos[0], e.pos[1] - scrollpos[1]), len(nodes)))
+            else:
+                clickcheck(e)
         elif e.button == 2:
             scroll = True
             scrolltrack = e.pos
             scrollhold = copy.copy(scrollpos)
+        elif e.button == 3:
+            rclick = True
+            rclickpos = e.pos
     elif e.type == pygame.MOUSEBUTTONUP:
         if e.button == 2:
             scroll = False
@@ -101,6 +149,11 @@ while True:
         if not(e.unicode == ""):
             for i in nodes:
                 i.keypress(e.unicode)
+        else:
+            a = (pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT)
+            if e.key in a:
+                for i in nodes:
+                    i.navpress(e.key)
     else:
         pass
 

@@ -109,6 +109,16 @@ class menu():
             i.rend(surface, (pos[0], h + pos[1]))
             h += i.h
 
+    def click(self, pos, cpos):
+        h = 0
+        j = 0
+        for i in self.labels:
+            if i.click((pos[0], pos[1] + h), cpos):
+                return(j)
+            h += i.h
+            j += 1
+        return(False)
+
 class menubar():
     def __init__(self):
         self.menubutton = button("File") 
@@ -288,6 +298,90 @@ class intBox(textBox):
         except:
             return(self.content)
 
+class boolBox(textBox):
+    def initcon(self):
+        self.content = True
+
+    def sanitize(self, inp):
+        inp = inp.lower()
+        if inp in ("true", "tru", "tr", "t", "yes", "ye", "y", "1"):
+            return(True)
+        elif inp in ("false", "fals", "fal", "fa", "f", "no", "n", "0"):
+            return(False)
+        else:
+            return(self.content)
+
+class textList():
+    def __init__(self, label, obj, col = (255, 255, 255), bcol = (100, 100, 100), fcol = (255, 255, 255), scol = (60, 120, 120)):
+        self.col = col
+        self.label = text(label, col)
+        self.items = []
+        self.obj = obj
+        self.h = self.label.h
+        self.w = self.label.w + 2 + self.label.h
+        self.bcol = bcol
+        self.fcol = fcol
+        self.scol = scol
+        self.hlight = False
+        self.conthold = ""
+
+    def getblank(self):
+        return(textBox("", ""))
+
+    def click(self, pos, cpos):
+        h = self.label.h + 1
+        j = False
+        if ((cpos[0] >= pos[0] + (self.w - self.label.h)) and
+            (cpos[1] >= pos[1]) and
+            (cpos[0] <= (pos[0] + self.w)) and
+            (cpos[1] <= (pos[1] + self.label.h))):
+            j = True
+            self.items.append(self.getblank())
+        else:
+            for i in self.items:
+                if i.click((pos[0], pos[1] + h), cpos):
+                    j = True
+                h += (i.h + 1)
+        return(j)
+
+    def keypress(self, key):
+        h = 1
+        for i in self.items:
+            if i.hlight:
+                if key == "\r":
+                    self.items.insert(h, self.getblank())
+                elif key == "": #There's a character for "delete" in this string but VS isn't rendering it
+                    self.items.remove(i)
+                elif (i.content == "") and (key == "\b"):
+                    self.items.remove(i)
+                else:
+                    i.keypress(key)
+            h += 1
+
+    def update(self):
+        self.w = self.label.w + 2 + self.label.h
+        self.h = self.label.h
+        for i in self.items:
+            i.update()
+            self.h += (i.h + 1)
+            self.w = max(self.w, i.w)
+
+    def rend(self, surface, pos):
+        self.label.rend(surface, pos)
+        ppos = ((pos[0] + self.w) - self.label.h, pos[1])
+        r = pygame.Rect(ppos, (self.label.h, self.label.h))
+        pygame.draw.rect(surface, self.bcol, r)
+        pygame.draw.line(surface, self.col, (ppos[0] + round(self.label.h / 2) - 1, ppos[1] + 2), (ppos[0] + round(self.label.h / 2) - 1, ppos[1] - 3 + self.label.h), 2)
+        pygame.draw.line(surface, self.col, (ppos[0] + 2, ppos[1] + round(self.label.h / 2) - 1), (ppos[0] - 3 + self.label.h, ppos[1] + round(self.label.h / 2) - 1), 2)
+        h = self.label.h + 1
+        for i in self.items:
+            i.rend(surface, (pos[0], pos[1] + h))
+            h += (i.h + 1)
+
+class boolList(textList):
+    def getblank(self):
+        return(boolBox("", ""))
+
 class node():
     def __init__(self, pos, id):
         self.id = id
@@ -309,7 +403,7 @@ class node():
         part.parent = self
         self.parts.append(part)
         self.w = max(self.w, part.w)
-        self.h += part.h
+        self.h += (part.h + 1)
 
     def update(self):
         self.w = 0
@@ -317,7 +411,7 @@ class node():
         for i in self.parts:
             i.update()
             self.w = max(self.w, i.w)
-            self.h += i.h
+            self.h += (i.h + 1)
         for i in self.parts:
             i.w = self.w
 
@@ -332,7 +426,7 @@ class node():
         h = 0
         for i in self.parts:
             i.rend(surface, (rp[0], rp[1] + h))
-            h += i.h
+            h += (i.h + 1)
         if self.connectable:
             self.socket.rend(surface, (rp[0], rp[1] + 3))
 
@@ -357,7 +451,7 @@ class node():
                         t = True
                     else:
                         pass
-                    j += i.h
+                    j += (i.h + 1)
         return(t)
 
     def keypress(self, inp):
@@ -368,6 +462,21 @@ class node():
             (cpos[1] <= ((self.pos[1] + spos[1]) + self.h))):
             for i in self.parts:
                 i.keypress(inp)
+
+    def navpress(self, inp):
+        cpos = pygame.mouse.get_pos()
+        if ((cpos[0] >= (self.pos[0] + spos[0])) and
+            (cpos[1] >= (self.pos[1] + spos[1])) and
+            (cpos[0] <= ((self.pos[0] + spos[0]) + self.w + 14)) and
+            (cpos[1] <= ((self.pos[1] + spos[1]) + self.h))):
+            if inp == pygame.K_LEFT:
+                self.pos = (self.pos[0] - 10, self.pos[1])
+            elif inp == pygame.K_RIGHT:
+                self.pos = (self.pos[0] + 10, self.pos[1])
+            elif inp == pygame.K_UP:
+                self.pos = (self.pos[0], self.pos[1] - 10)
+            elif inp == pygame.K_DOWN:
+                self.pos = (self.pos[0], self.pos[1] + 10)
 
     def compile(self):
         pass
@@ -383,11 +492,142 @@ class startNode(node):
 class dialougeNode(node):
     def populate(self):
         self.addPart(text("Dialouge/choice"))
-        self.addPart(textBox("str test", "test"))
-        self.addPart(floatBox("flt test", "test"))
-        self.addPart(intBox("int test", "test"))
+        self.addPart(textBox("Character", ""))
+        self.addPart(textBox("Animation", ""))
+        self.addPart(floatBox("Timeout", ""))
+        self.addPart(textList("Dialouge", ""))
+        self.addPart(textBox("Question", ""))
+        self.addPart(textBox("Answer A", ""))
+        self.addPart(textBox("Answer B", ""))
+        self.addPart(textBox("Answer C", ""))
+        self.addPart(textBox("Answer D", ""))
         self.addPart(output("Option A", "target1"))
         self.addPart(output("Option B", "target2"))
         self.addPart(output("Option C", "target3"))
         self.addPart(output("Option D", "target4"))
-        self.addPart(output("Timeout", "targetDefault"))
+        self.addPart(output("Timeout target", "targetDefault"))
+
+class setVarNode(node):
+    def populate(self):
+        self.addPart(text("Set Variables"))
+        self.addPart(text(""))
+        self.addPart(intBox("Str variable ID", ""))
+        self.addPart(textBox("Value", ""))
+        self.addPart(text(""))
+        self.addPart(intBox("Int variable ID", ""))
+        self.addPart(intBox("Value", ""))
+        self.addPart(text(""))
+        self.addPart(intBox("Float variable ID", ""))
+        self.addPart(floatBox("Value", ""))
+        self.addPart(text(""))
+        self.addPart(intBox("Bool variable ID", ""))
+        self.addPart(boolBox("Value", ""))
+        self.addPart(text(""))
+        self.addPart(intBox("Inventory slot ID", ""))
+        self.addPart(textBox("Item", ""))
+        self.addPart(text(""))
+        self.addPart(output("Target", ""))
+
+class varVarStrNode(node):
+    def populate(self):
+        self.addPart(text("Var1 == Var2 (Str)"))
+        self.addPart(intBox("Str variable ID 1", ""))
+        self.addPart(intBox("Str variable ID 2", ""))
+        self.addPart(output("True", ""))
+        self.addPart(output("False", ""))
+
+class varVarIntNode(node):
+    def populate(self):
+        self.addPart(text("Var1 == Var2 (Int)"))
+        self.addPart(intBox("Int variable ID 1", ""))
+        self.addPart(intBox("Int variable ID 2", ""))
+        self.addPart(output("True", ""))
+        self.addPart(output("False", ""))
+
+class varVarFloatNode(node):
+    def populate(self):
+        self.addPart(text("Var1 == Var2 (Float)"))
+        self.addPart(intBox("Float variable ID 1", ""))
+        self.addPart(intBox("Float variable ID 2", ""))
+        self.addPart(output("True", ""))
+        self.addPart(output("False", ""))
+
+class varVarBoolNode(node):
+    def populate(self):
+        self.addPart(text("Var1 == Var2 (Bool)"))
+        self.addPart(intBox("Bool variable ID 1", ""))
+        self.addPart(intBox("Bool variable ID 2", ""))
+        self.addPart(output("True", ""))
+        self.addPart(output("False", ""))
+
+class varVarInvNode(node):
+    def populate(self):
+        self.addPart(text("Var1 == Var2 (Invetory)"))
+        self.addPart(intBox("Slot ID 1", ""))
+        self.addPart(intBox("Slot ID 2", ""))
+        self.addPart(output("True", ""))
+        self.addPart(output("False", ""))
+
+class varValStrNode(node):
+    def populate(self):
+        self.addPart(text("Var == Value (Str)"))
+        self.addPart(intBox("Str variable ID", ""))
+        self.addPart(textBox("Value", ""))
+        self.addPart(output("True", ""))
+        self.addPart(output("False", ""))
+
+class varValIntNode(node):
+    def populate(self):
+        self.addPart(text("Var == Value (Int)"))
+        self.addPart(intBox("Int variable ID", ""))
+        self.addPart(intBox("Value", ""))
+        self.addPart(output("True", ""))
+        self.addPart(output("False", ""))
+
+class varValFloatNode(node):
+    def populate(self):
+        self.addPart(text("Var == Value (Float)"))
+        self.addPart(intBox("Float variable ID", ""))
+        self.addPart(floatBox("Value", ""))
+        self.addPart(output("True", ""))
+        self.addPart(output("False", ""))
+
+class varValBoolNode(node):
+    def populate(self):
+        self.addPart(text("Var == Value (Bool)"))
+        self.addPart(intBox("Bool variable ID", ""))
+        self.addPart(boolBox("Value", ""))
+        self.addPart(output("True", ""))
+        self.addPart(output("False", ""))
+
+class varValInvNode(node):
+    def populate(self):
+        self.addPart(text("Var == Value (Inventory)"))
+        self.addPart(intBox("Slot ID", ""))
+        self.addPart(textBox("Item", ""))
+        self.addPart(output("True", ""))
+        self.addPart(output("False", ""))
+
+class dayNode(node):
+    def populate(self):
+        self.addPart(text("Day cutscene"))
+        self.addPart(textBox("Title", ""))
+        self.addPart(textBox("Subtitle", ""))
+        self.addPart(intBox("Day number", ""))
+        self.addPart(textBox("Weather", ""))
+        self.addPart(output("Target", ""))
+
+class sceneNode(node):
+    def populate(self):
+        self.addPart(text("Scene transition"))
+        self.addPart(textList("Characters", ""))
+        self.addPart(boolList("Sides", ""))
+        self.addPart(output("Target", ""))
+
+class musicNode(node):
+    def populate(self):
+        self.addPart(text("Music transition"))
+        self.addPart(floatBox("Fade out", ""))
+        self.addPart(floatBox("Fade in", ""))
+        self.addPart(textBox("Track", ""))
+        self.addPart(output("Target", ""))
