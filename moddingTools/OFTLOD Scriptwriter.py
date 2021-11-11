@@ -132,10 +132,11 @@ while True:
                 rclick = False
                 a = rclickMenu.click(rclickpos, e.pos)
                 if not(a is False):
-                    nodes.append(rclickClasses[a]((e.pos[0] - scrollpos[0], e.pos[1] - scrollpos[1]), len(nodes)))
+                    nodes.append(rclickClasses[a]((rclickpos[0] - scrollpos[0], rclickpos[1] - scrollpos[1]), len(nodes)))
             else:
                 clickcheck(e)
         elif e.button == 2:
+            rclick = False
             scroll = True
             scrolltrack = e.pos
             scrollhold = copy.copy(scrollpos)
@@ -144,6 +145,7 @@ while True:
             rclickpos = e.pos
     elif e.type == pygame.MOUSEBUTTONUP:
         if e.button == 2:
+            rclick = False
             scroll = False
     elif e.type == pygame.KEYDOWN:
         if not(e.unicode == ""):
