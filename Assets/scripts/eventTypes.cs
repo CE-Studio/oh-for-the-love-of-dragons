@@ -32,14 +32,14 @@ public class eventTypes:MonoBehaviour {
 
     [Serializable]
     public struct setVarEvent {
-        public int intID;
         public int strID;
+        public int intID;
         public int floatID;
         public int boolID;
         public int inventorySlot;
 
-        public int intValue;
         public string strValue;
+        public int intValue;
         public float floatValue;
         public bool boolValue;
         public string itemName;
@@ -49,27 +49,111 @@ public class eventTypes:MonoBehaviour {
     }
 
     [Serializable]
-    public struct varVar {
-        public string type;
+    public struct varVarStr {
         public int var1id;
         public int var2id;
 
         public string nextType1;
         public string nextType2;
-
         public string target1;
         public string target2;
     }
 
     [Serializable]
-    public struct varValue {
-        public string type;
+    public struct varVarInt {
+        public int var1id;
+        public int var2id;
+
+        public string nextType1;
+        public string nextType2;
+        public string target1;
+        public string target2;
+    }
+
+    [Serializable]
+    public struct varVarFloat {
+        public int var1id;
+        public int var2id;
+
+        public string nextType1;
+        public string nextType2;
+        public string target1;
+        public string target2;
+    }
+
+    [Serializable]
+    public struct varVarBool {
+        public int var1id;
+        public int var2id;
+
+        public string nextType1;
+        public string nextType2;
+        public string target1;
+        public string target2;
+    }
+
+    [Serializable]
+    public struct varVarInv {
+        public int var1id;
+        public int var2id;
+
+        public string nextType1;
+        public string nextType2;
+        public string target1;
+        public string target2;
+    }
+
+    [Serializable]
+    public struct varValueStr {
         public int var;
         public string value;
 
         public string nextType1;
         public string nextType2;
+        public string target1;
+        public string target2;
+    }
 
+    [Serializable]
+    public struct varValueInt {
+        public int var;
+        public int value;
+
+        public string nextType1;
+        public string nextType2;
+        public string target1;
+        public string target2;
+    }
+
+    [Serializable]
+    public struct varValueFloat {
+        public int var;
+        public float value;
+
+        public string nextType1;
+        public string nextType2;
+        public string target1;
+        public string target2;
+    }
+
+    [Serializable]
+    public struct varValueBool {
+        public int var;
+        public bool value;
+
+        public string nextType1;
+        public string nextType2;
+        public string target1;
+        public string target2;
+    }
+
+    [Serializable]
+    public struct varValueInv {
+        public int var;
+        public string value;
+
+        public string nextType1;
+        public string nextType2;
         public string target1;
         public string target2;
     }
@@ -94,6 +178,17 @@ public class eventTypes:MonoBehaviour {
         public string nextType;
         public string targetDefault;
     }
+
+    [Serializable]
+    public struct musicTransition {
+        public float fadeout;
+        public float fadein;
+        public string track;
+
+        public string nextType;
+        public string targetDefault;
+    }
+
 
     public void Start() {
         dialougeEvent testing = new dialougeEvent();

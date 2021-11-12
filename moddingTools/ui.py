@@ -171,9 +171,10 @@ class socket():
         pygame.draw.polygon(surface, self.bcol, p, 1)
 
 class output():
-    def __init__(self, text, obj, color = (255, 255, 255)):
+    def __init__(self, text, obj, obj2 = "nextType", color = (255, 255, 255)):
         self.text = text
         self.obj = obj
+        self.obj2 = obj2
         self.w, self.h = textfont.size(self.text)
         self.w += 4
         self.h += 1
@@ -492,143 +493,143 @@ class startNode(node):
 class dialogueNode(node):
     def populate(self):
         self.addPart(text("Dialogue/choice"))
-        self.addPart(textBox("Character", ""))
-        self.addPart(textBox("Animation", ""))
-        self.addPart(floatBox("Timeout", ""))
-        self.addPart(textList("dialogue", ""))
-        self.addPart(textBox("Question", ""))
-        self.addPart(textBox("Answer A", ""))
-        self.addPart(textBox("Answer B", ""))
-        self.addPart(textBox("Answer C", ""))
-        self.addPart(textBox("Answer D", ""))
-        self.addPart(output("Option A", "target1"))
-        self.addPart(output("Option B", "target2"))
-        self.addPart(output("Option C", "target3"))
-        self.addPart(output("Option D", "target4"))
+        self.addPart(textBox("Character", "character"))
+        self.addPart(textBox("Animation", "animation"))
+        self.addPart(floatBox("Timeout", "timeout"))
+        self.addPart(textList("dialogue", "dialogue"))
+        self.addPart(textBox("Question", "question"))
+        self.addPart(textBox("Answer A", "option1"))
+        self.addPart(textBox("Answer B", "option2"))
+        self.addPart(textBox("Answer C", "option3"))
+        self.addPart(textBox("Answer D", "option4"))
+        self.addPart(output("Option A", "target1", "nextType1"))
+        self.addPart(output("Option B", "target2", "nextType2"))
+        self.addPart(output("Option C", "target3", "nextType3"))
+        self.addPart(output("Option D", "target4", "nextType4"))
         self.addPart(output("Timeout target", "targetDefault"))
 
 class setVarNode(node):
     def populate(self):
         self.addPart(text("Set Variables"))
         self.addPart(text(""))
-        self.addPart(intBox("Str variable ID", ""))
-        self.addPart(textBox("Value", ""))
+        self.addPart(intBox("Str variable ID", "strID"))
+        self.addPart(textBox("Value", "strValue"))
         self.addPart(text(""))
-        self.addPart(intBox("Int variable ID", ""))
-        self.addPart(intBox("Value", ""))
+        self.addPart(intBox("Int variable ID", "intID"))
+        self.addPart(intBox("Value", "intValue"))
         self.addPart(text(""))
-        self.addPart(intBox("Float variable ID", ""))
-        self.addPart(floatBox("Value", ""))
+        self.addPart(intBox("Float variable ID", "floatID"))
+        self.addPart(floatBox("Value", "floatValue"))
         self.addPart(text(""))
-        self.addPart(intBox("Bool variable ID", ""))
-        self.addPart(boolBox("Value", ""))
+        self.addPart(intBox("Bool variable ID", "boolID"))
+        self.addPart(boolBox("Value", "boolValue"))
         self.addPart(text(""))
-        self.addPart(intBox("Inventory slot ID", ""))
-        self.addPart(textBox("Item", ""))
+        self.addPart(intBox("Inventory slot ID", "inventorySlot"))
+        self.addPart(textBox("Item", "itemName"))
         self.addPart(text(""))
-        self.addPart(output("Target", ""))
+        self.addPart(output("Target", "targetDefault"))
 
 class varVarStrNode(node):
     def populate(self):
         self.addPart(text("Var1 == Var2 (Str)"))
-        self.addPart(intBox("Str variable ID 1", ""))
-        self.addPart(intBox("Str variable ID 2", ""))
-        self.addPart(output("True", ""))
-        self.addPart(output("False", ""))
+        self.addPart(intBox("Str variable ID 1", "var1id"))
+        self.addPart(intBox("Str variable ID 2", "var2id"))
+        self.addPart(output("True", "target1", "nextType1"))
+        self.addPart(output("True", "target2", "nextType2"))
 
 class varVarIntNode(node):
     def populate(self):
         self.addPart(text("Var1 == Var2 (Int)"))
-        self.addPart(intBox("Int variable ID 1", ""))
-        self.addPart(intBox("Int variable ID 2", ""))
-        self.addPart(output("True", ""))
-        self.addPart(output("False", ""))
+        self.addPart(intBox("Int variable ID 1", "var1id"))
+        self.addPart(intBox("Int variable ID 2", "var2id"))
+        self.addPart(output("True", "target1", "nextType1"))
+        self.addPart(output("True", "target2", "nextType2"))
 
 class varVarFloatNode(node):
     def populate(self):
         self.addPart(text("Var1 == Var2 (Float)"))
-        self.addPart(intBox("Float variable ID 1", ""))
-        self.addPart(intBox("Float variable ID 2", ""))
-        self.addPart(output("True", ""))
-        self.addPart(output("False", ""))
+        self.addPart(intBox("Float variable ID 1", "var1id"))
+        self.addPart(intBox("Float variable ID 2", "var2id"))
+        self.addPart(output("True", "target1", "nextType1"))
+        self.addPart(output("True", "target2", "nextType2"))
 
 class varVarBoolNode(node):
     def populate(self):
         self.addPart(text("Var1 == Var2 (Bool)"))
-        self.addPart(intBox("Bool variable ID 1", ""))
-        self.addPart(intBox("Bool variable ID 2", ""))
-        self.addPart(output("True", ""))
-        self.addPart(output("False", ""))
+        self.addPart(intBox("Bool variable ID 1", "var1id"))
+        self.addPart(intBox("Bool variable ID 2", "var2id"))
+        self.addPart(output("True", "target1", "nextType1"))
+        self.addPart(output("True", "target2", "nextType2"))
 
 class varVarInvNode(node):
     def populate(self):
         self.addPart(text("Var1 == Var2 (Invetory)"))
-        self.addPart(intBox("Slot ID 1", ""))
-        self.addPart(intBox("Slot ID 2", ""))
-        self.addPart(output("True", ""))
-        self.addPart(output("False", ""))
+        self.addPart(intBox("Slot ID 1", "var1id"))
+        self.addPart(intBox("Slot ID 2", "var2id"))
+        self.addPart(output("True", "target1", "nextType1"))
+        self.addPart(output("True", "target2", "nextType2"))
 
 class varValStrNode(node):
     def populate(self):
         self.addPart(text("Var == Value (Str)"))
-        self.addPart(intBox("Str variable ID", ""))
-        self.addPart(textBox("Value", ""))
-        self.addPart(output("True", ""))
-        self.addPart(output("False", ""))
+        self.addPart(intBox("Str variable ID", "var"))
+        self.addPart(textBox("Value", "value"))
+        self.addPart(output("True", "target1", "nextType1"))
+        self.addPart(output("True", "target2", "nextType2"))
 
 class varValIntNode(node):
     def populate(self):
         self.addPart(text("Var == Value (Int)"))
-        self.addPart(intBox("Int variable ID", ""))
-        self.addPart(intBox("Value", ""))
-        self.addPart(output("True", ""))
-        self.addPart(output("False", ""))
+        self.addPart(intBox("Int variable ID", "var"))
+        self.addPart(intBox("Value", "value"))
+        self.addPart(output("True", "target1", "nextType1"))
+        self.addPart(output("True", "target2", "nextType2"))
 
 class varValFloatNode(node):
     def populate(self):
         self.addPart(text("Var == Value (Float)"))
-        self.addPart(intBox("Float variable ID", ""))
-        self.addPart(floatBox("Value", ""))
-        self.addPart(output("True", ""))
-        self.addPart(output("False", ""))
+        self.addPart(intBox("Float variable ID", "var"))
+        self.addPart(floatBox("Value", "value"))
+        self.addPart(output("True", "target1", "nextType1"))
+        self.addPart(output("True", "target2", "nextType2"))
 
 class varValBoolNode(node):
     def populate(self):
         self.addPart(text("Var == Value (Bool)"))
-        self.addPart(intBox("Bool variable ID", ""))
-        self.addPart(boolBox("Value", ""))
-        self.addPart(output("True", ""))
-        self.addPart(output("False", ""))
+        self.addPart(intBox("Bool variable ID", "var"))
+        self.addPart(boolBox("Value", "value"))
+        self.addPart(output("True", "target1", "nextType1"))
+        self.addPart(output("True", "target2", "nextType2"))
 
 class varValInvNode(node):
     def populate(self):
         self.addPart(text("Var == Value (Inventory)"))
-        self.addPart(intBox("Slot ID", ""))
-        self.addPart(textBox("Item", ""))
-        self.addPart(output("True", ""))
-        self.addPart(output("False", ""))
+        self.addPart(intBox("Slot ID", "var"))
+        self.addPart(textBox("Item", "value"))
+        self.addPart(output("True", "target1", "nextType1"))
+        self.addPart(output("True", "target2", "nextType2"))
 
 class dayNode(node):
     def populate(self):
         self.addPart(text("Day cutscene"))
-        self.addPart(textBox("Title", ""))
-        self.addPart(textBox("Subtitle", ""))
-        self.addPart(intBox("Day number", ""))
-        self.addPart(textBox("Weather", ""))
-        self.addPart(output("Target", ""))
+        self.addPart(textBox("Title", "title"))
+        self.addPart(textBox("Subtitle", "subtitle"))
+        self.addPart(intBox("Day number", "dayNumber"))
+        self.addPart(textBox("Weather", "weather"))
+        self.addPart(output("Target", "targetDefault"))
 
 class sceneNode(node):
     def populate(self):
         self.addPart(text("Scene transition"))
-        self.addPart(textBox("Scene", ""))
-        self.addPart(textList("Characters", ""))
-        self.addPart(boolList("Sides", ""))
-        self.addPart(output("Target", ""))
+        self.addPart(textBox("Scene", "scene"))
+        self.addPart(textList("Characters", "characters"))
+        self.addPart(boolList("Sides", "sides"))
+        self.addPart(output("Target", "targetDefault"))
 
 class musicNode(node):
     def populate(self):
         self.addPart(text("Music transition"))
-        self.addPart(floatBox("Fade out", ""))
-        self.addPart(floatBox("Fade in", ""))
-        self.addPart(textBox("Track", ""))
-        self.addPart(output("Target", ""))
+        self.addPart(floatBox("Fade out", "fadeout"))
+        self.addPart(floatBox("Fade in", "fadein"))
+        self.addPart(textBox("Track", "track"))
+        self.addPart(output("Target", "targetDefault"))
