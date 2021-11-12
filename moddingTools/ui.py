@@ -1,4 +1,4 @@
-﻿import pygame
+﻿import pygame, weakref, json
 
 textfont = pygame.font.Font("OpenSans-Regular.ttf", 14)
 
@@ -30,6 +30,9 @@ class text():
     def keypress(self, inp):
         pass
 
+    def compile(self, d):
+        pass
+
 class button():
     def __init__(self, label, bcol = (120, 120, 120), fcol = (255, 255, 255), scol = (95, 159, 172), callback = None):
         self.label = text(label, fcol, callback)
@@ -54,6 +57,9 @@ class button():
         return(self.label.click(pos, cpos))
 
     def keypress(self, inp):
+        pass
+
+    def compile(self, d):
         pass
 
 class buttonGang():
@@ -89,6 +95,9 @@ class buttonGang():
             rpos += i.w
             h += 1
         return(False)
+
+    def compile(self, d):
+        pass
 
 class menu():
     def __init__(self, options, bcol = (120, 120, 120), fcol = (255, 255, 255)):
@@ -186,12 +195,15 @@ class output():
         self.w, self.h = textfont.size(self.text)
         self.w += 4
         self.h += 1
+        if not (self.connectTo == False):
+            if self.connectTo() == None:
+                self.connectTo = False
 
     def rend(self, surface, pos):
         surface.blit(textfont.render(self.text, True, self.color), (pos[0] + 2, pos[1]))
         self.socket.rend(surface, (pos[0] + self.w, pos[1] + 3))
         if not(self.connectTo == False):
-            i = self.connectTo
+            i = self.connectTo()
             pygame.draw.line(surface, (0, 255, 0), (pos[0] + self.w + 7, pos[1] + 11), (i.pos[0] + spos[0] - 7, i.pos[1] + spos[1] + 11))
 
     def click(self, pos, cpos):
@@ -210,13 +222,13 @@ class output():
     def keypress(self, inp):
         pass
 
-    def compile(self, datadict):
+    def compile(self, d):
         if self.connectTo == False:
-            datadict[str(self.obj)] = "END"
-            return(False)
+            d[str(self.obj)] = "END"
+            d[str(self.obj2)] = "END"
         else:
-            datadict[str(self.obj)] = str(self.connectTo.id)
-            return(True)
+            d[str(self.obj)] = str(self.connectTo().id)
+            d[str(self.obj2)] = str(self.connectTo().type)
 
 class textBox():
     def __init__(self, label, obj, col = (255, 255, 255), bcol = (100, 100, 100), fcol = (255, 255, 255), scol = (60, 120, 120)):
@@ -278,6 +290,9 @@ class textBox():
             else:
                 self.conthold += key
                 self.text.text = self.conthold + "|"
+
+    def compile(self, d):
+        d[str(self.obj)] = self.content
 
 class floatBox(textBox):
     def initcon(self):
@@ -379,14 +394,22 @@ class textList():
             i.rend(surface, (pos[0], pos[1] + h))
             h += (i.h + 1)
 
+    def compile(self, d):
+        h = []
+        for i in self.items:
+            h.append(i.content)
+        d[str(self.obj)] = h
+
 class boolList(textList):
     def getblank(self):
         return(boolBox("", ""))
 
 class node():
     def __init__(self, pos, id):
+        self.type = "default"
         self.id = id
         self.connectable = True
+        self.deleteable = True 
         self.parts = []
         self.connections = []
         self.w, self.h = (0, 0)
@@ -401,7 +424,6 @@ class node():
         pass
 
     def addPart(self, part):
-        part.parent = self
         self.parts.append(part)
         self.w = max(self.w, part.w)
         self.h += (part.h + 1)
@@ -424,6 +446,9 @@ class node():
             pygame.draw.rect(surface, self.ccol, r)
         else:
             pygame.draw.rect(surface, self.bgcol, r)
+        if self.deleteable:
+            r = pygame.Rect((rp[0], rp[1] - 14), (14, 14))
+            pygame.draw.rect(surface, (255, 0, 0), r)
         h = 0
         for i in self.parts:
             i.rend(surface, (rp[0], rp[1] + h))
@@ -433,16 +458,22 @@ class node():
 
     def click(self, cpos, con, spos):
         t = False
-        if ((cpos[0] >= (self.pos[0] + spos[0])) and
-            (cpos[1] >= (self.pos[1] + spos[1])) and
+        if ((cpos[0] >= (self.pos[0] + spos[0] - 14)) and
+            (cpos[1] >= (self.pos[1] + spos[1] - 14)) and
             (cpos[0] <= ((self.pos[0] + spos[0]) + self.w + 14)) and
             (cpos[1] <= ((self.pos[1] + spos[1]) + self.h))):
             if con:
                 if self.connectable:
-                    return(self)
+                    return(weakref.ref(self))
                 else:
                     return(False)
             else:
+                if self.deleteable and ((cpos[0] >= (self.pos[0] + spos[0])) and
+                                        (cpos[1] >= (self.pos[1] + spos[1] - 14)) and
+                                        (cpos[0] <= ((self.pos[0] + spos[0]) + 14)) and
+                                        (cpos[1] <= (self.pos[1] + spos[1]))):
+                    del(self.parts)
+                    return("del")
                 j = 0
                 for i in self.parts:
                     h = i.click((self.pos[0] + spos[0], self.pos[1] + spos[1] + j), cpos)
@@ -480,11 +511,16 @@ class node():
                 self.pos = (self.pos[0], self.pos[1] + 10)
 
     def compile(self):
-        pass
+        data = {}
+        for i in self.parts:
+            i.compile(data)
+        print(json.dumps(data))
 
 class startNode(node):
     def populate(self):
+        self.type = "start"
         self.connectable = False
+        self.deleteable = False
         self.bgcol = (60, 100, 60)
         self.addPart(text(""))
         self.addPart(output("     Start     ", "default"))
@@ -492,6 +528,7 @@ class startNode(node):
 
 class dialogueNode(node):
     def populate(self):
+        self.type = "dia"
         self.addPart(text("Dialogue/choice"))
         self.addPart(textBox("Character", "character"))
         self.addPart(textBox("Animation", "animation"))
@@ -510,6 +547,7 @@ class dialogueNode(node):
 
 class setVarNode(node):
     def populate(self):
+        self.type = "setvar"
         self.addPart(text("Set Variables"))
         self.addPart(text(""))
         self.addPart(intBox("Str variable ID", "strID"))
@@ -531,6 +569,7 @@ class setVarNode(node):
 
 class varVarStrNode(node):
     def populate(self):
+        self.type = "varvarstr"
         self.addPart(text("Var1 == Var2 (Str)"))
         self.addPart(intBox("Str variable ID 1", "var1id"))
         self.addPart(intBox("Str variable ID 2", "var2id"))
@@ -539,6 +578,7 @@ class varVarStrNode(node):
 
 class varVarIntNode(node):
     def populate(self):
+        self.type = "varvarint"
         self.addPart(text("Var1 == Var2 (Int)"))
         self.addPart(intBox("Int variable ID 1", "var1id"))
         self.addPart(intBox("Int variable ID 2", "var2id"))
@@ -547,6 +587,7 @@ class varVarIntNode(node):
 
 class varVarFloatNode(node):
     def populate(self):
+        self.type = "varvarflt"
         self.addPart(text("Var1 == Var2 (Float)"))
         self.addPart(intBox("Float variable ID 1", "var1id"))
         self.addPart(intBox("Float variable ID 2", "var2id"))
@@ -555,6 +596,7 @@ class varVarFloatNode(node):
 
 class varVarBoolNode(node):
     def populate(self):
+        self.type = "varvarbol"
         self.addPart(text("Var1 == Var2 (Bool)"))
         self.addPart(intBox("Bool variable ID 1", "var1id"))
         self.addPart(intBox("Bool variable ID 2", "var2id"))
@@ -563,6 +605,7 @@ class varVarBoolNode(node):
 
 class varVarInvNode(node):
     def populate(self):
+        self.type = "varvarinv"
         self.addPart(text("Var1 == Var2 (Invetory)"))
         self.addPart(intBox("Slot ID 1", "var1id"))
         self.addPart(intBox("Slot ID 2", "var2id"))
@@ -579,6 +622,7 @@ class varValStrNode(node):
 
 class varValIntNode(node):
     def populate(self):
+        self.type = "varvalint"
         self.addPart(text("Var == Value (Int)"))
         self.addPart(intBox("Int variable ID", "var"))
         self.addPart(intBox("Value", "value"))
@@ -587,6 +631,7 @@ class varValIntNode(node):
 
 class varValFloatNode(node):
     def populate(self):
+        self.type = "varvalflt"
         self.addPart(text("Var == Value (Float)"))
         self.addPart(intBox("Float variable ID", "var"))
         self.addPart(floatBox("Value", "value"))
@@ -595,6 +640,7 @@ class varValFloatNode(node):
 
 class varValBoolNode(node):
     def populate(self):
+        self.type = "varvalbol"
         self.addPart(text("Var == Value (Bool)"))
         self.addPart(intBox("Bool variable ID", "var"))
         self.addPart(boolBox("Value", "value"))
@@ -603,6 +649,7 @@ class varValBoolNode(node):
 
 class varValInvNode(node):
     def populate(self):
+        self.type = "varvalinv"
         self.addPart(text("Var == Value (Inventory)"))
         self.addPart(intBox("Slot ID", "var"))
         self.addPart(textBox("Item", "value"))
@@ -611,6 +658,7 @@ class varValInvNode(node):
 
 class dayNode(node):
     def populate(self):
+        self.type = "day"
         self.addPart(text("Day cutscene"))
         self.addPart(textBox("Title", "title"))
         self.addPart(textBox("Subtitle", "subtitle"))
@@ -620,6 +668,7 @@ class dayNode(node):
 
 class sceneNode(node):
     def populate(self):
+        self.type = "scene"
         self.addPart(text("Scene transition"))
         self.addPart(textBox("Scene", "scene"))
         self.addPart(textList("Characters", "characters"))
@@ -628,6 +677,7 @@ class sceneNode(node):
 
 class musicNode(node):
     def populate(self):
+        self.type = "music"
         self.addPart(text("Music transition"))
         self.addPart(floatBox("Fade out", "fadeout"))
         self.addPart(floatBox("Fade in", "fadein"))

@@ -217,5 +217,8 @@ public class eventTypes:MonoBehaviour {
 
         string outputTest = JsonUtility.ToJson(testing);
         print(outputTest);
+        testing = JsonUtility.FromJson<dialougeEvent>("{\"character\": \"\", \"animation\": \"\", \"timeout\": 0.0, \"dialogue\": [], \"question\": \"\", \"option1\": \"\", \"option2\": \"\", \"option3\": \"\", \"option4\": \"\", \"target1\": \"END\", \"nextType1\": \"END\", \"target2\": \"END\", \"nextType2\": \"END\", \"target3\": \"END\", \"nextType3\": \"END\", \"target4\": \"END\", \"nextType4\": \"END\", \"targetDefault\": \"END\", \"nextType\": \"END\"}");
+        outputTest = JsonUtility.ToJson(testing);
+        print(outputTest);
     }
 }

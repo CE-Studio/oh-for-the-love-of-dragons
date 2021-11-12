@@ -1,4 +1,4 @@
-﻿import pygame, pickle, json, sys, copy
+﻿import pygame, pickle, json, sys, copy, weakref
 def clamp(n, smallest, largest): 
     return max(smallest, min(n, largest))
 
@@ -103,21 +103,27 @@ def clickcheck(e):
                 return
         connecting = False
     else:
+        j = 0
         for i in nodes:
             h = i.click(e.pos, False, scrollpos)
             if h == True:
                 return
-            if h == False:
+            elif h == False:
                 pass
+            elif h == "del":
+                del(nodes[j])
+                return
             else:
                 connecting = True
                 connector = h
                 return
+            j += 1
 
 while True:
     ui.spos = scrollpos
     e = pygame.event.wait()
     if e.type == pygame.QUIT:
+        print("change da world\nmy final message. Goodb ye")
         sys.exit(0)
     elif e.type == pygame.WINDOWRESIZED:
         size = [e.x, e.y]
@@ -141,6 +147,8 @@ while True:
             scrolltrack = e.pos
             scrollhold = copy.copy(scrollpos)
         elif e.button == 3:
+            for i in nodes:
+                i.compile()
             rclick = True
             rclickpos = e.pos
     elif e.type == pygame.MOUSEBUTTONUP:
