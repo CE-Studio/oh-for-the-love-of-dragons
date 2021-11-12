@@ -39,7 +39,8 @@ rclickTitles = ("Dialogue/choice",
                 "var == value (inventory)",
                 "Day transition",
                 "Scene transition",
-                "Music transition")
+                "Music transition",
+                "Load chapter")
 
 rclickClasses = (ui.dialogueNode,
                  ui.setVarNode,             
@@ -55,7 +56,8 @@ rclickClasses = (ui.dialogueNode,
                  ui.varValInvNode,
                  ui.dayNode,
                  ui.sceneNode,
-                 ui.musicNode)
+                 ui.musicNode,
+                 ui.chapterNode)
 
 rclickMenu = ui.menu(rclickTitles)
 rclick = False
@@ -88,7 +90,21 @@ def clickcheck(e):
     global connecting
     global connector
 
-    if menu.click(e.pos, e.button):
+    h = menu.click(e.pos, e.button)
+    if not(h is False):
+        if h is True:
+            return
+        if h == 0:
+            pass
+        elif h == 1:
+            pass
+        elif h == 2:
+            pass
+        elif h == 3:
+            for i in range(len(nodes)):
+                nodes[i].id = str(i)
+            for i in nodes:
+                i.compile()
         return
     if connecting:
         for i in nodes:
@@ -147,8 +163,6 @@ while True:
             scrolltrack = e.pos
             scrollhold = copy.copy(scrollpos)
         elif e.button == 3:
-            for i in nodes:
-                i.compile()
             rclick = True
             rclickpos = e.pos
     elif e.type == pygame.MOUSEBUTTONUP:

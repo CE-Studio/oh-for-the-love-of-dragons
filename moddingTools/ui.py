@@ -1,4 +1,4 @@
-﻿import pygame, weakref, json
+﻿import pygame, weakref, json, gc
 
 textfont = pygame.font.Font("OpenSans-Regular.ttf", 14)
 
@@ -149,7 +149,7 @@ class menubar():
         if button == 1:
             if self.showmenu:
                 self.showmenu = False
-                return(True)
+                return(self.menu.click((2, self.h + 2), pos))
             else:
                 if self.menubutton.click((2, 0), pos):
                     self.showmenu = True
@@ -473,6 +473,9 @@ class node():
                                         (cpos[0] <= ((self.pos[0] + spos[0]) + 14)) and
                                         (cpos[1] <= (self.pos[1] + spos[1]))):
                     del(self.parts)
+                    #h = gc.get_referrers(self)
+                    #for i in h:
+                    #    print(type(i))
                     return("del")
                 j = 0
                 for i in self.parts:
@@ -683,3 +686,9 @@ class musicNode(node):
         self.addPart(floatBox("Fade in", "fadein"))
         self.addPart(textBox("Track", "track"))
         self.addPart(output("Target", "targetDefault"))
+
+class chapterNode(node):
+    def populate(self):
+        self.type = "chapter"
+        self.addPart(text("Go to chapter"))
+        self.addPart(textBox("Chapter", "chapter"))
