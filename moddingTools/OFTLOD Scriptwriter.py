@@ -12,7 +12,7 @@ screen = pygame.display.set_mode((i.current_w - 100, i.current_h - 100), pygame.
 pygame.display.set_icon(pygame.image.load("icon.png"))
 pygame.display.set_caption("Scriptwriter")
 
-import ui
+import ui, filebrowser
 
 menu = ui.menubar()
 menu.rend(screen)
