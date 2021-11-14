@@ -11,6 +11,7 @@ i = pygame.display.Info()
 screen = pygame.display.set_mode((i.current_w - 100, i.current_h - 100), pygame.RESIZABLE)
 pygame.display.set_icon(pygame.image.load("icon.png"))
 pygame.display.set_caption("Scriptwriter")
+pygame.display.set_allow_screensaver(True)
 
 import ui, filebrowser
 
@@ -134,6 +135,8 @@ def clickcheck(e):
                 connector = h
                 return
             j += 1
+
+filebrowser.browse()
 
 while True:
     ui.spos = scrollpos
