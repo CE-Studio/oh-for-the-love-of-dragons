@@ -3,18 +3,59 @@
 font = pygame.font.Font("OpenSans-Regular.ttf", 16)
 screen = pygame.display.get_surface()
 listSurf = pygame.Surface((100, 100))
+itemlist = []
+curdir = "./"
+
+dico = pygame.image.load("fbico/derg.png")
+fico = pygame.image.load("fbico/folder.png")
+jico = pygame.image.load("fbico/json.png")
+oico = pygame.image.load("fbico/other.png")
+
+class listitem():
+    def __init__(self, file):
+        self.file = file
+        self.h = font.size(self.file)[1]
+        if os.path.isdir(curdir + file):
+            self.type = "dir"
+        else:
+            self.type = file.split(".")[-1]
+
+    def rend(self, surface, pos):
+        if self.type == "dir":
+            surface.blit(fico, pos)
+        elif self.type == "derg":
+            surface.blit(dico, pos)
+        elif self.type == "json":
+            surface.blit(jico, pos)
+        else:
+            surface.blit(oico, pos)
+        surface.blit(font.render(self.file, True, (0, 0, 0)), (pos[0] + 18, pos[1] - 3))
 
 def __draw__():
     screen.fill((200, 200, 200))
-    listSurf.fill((100, 100, 100))
+    listSurf.fill((255, 255, 255))
+
+    h = 2
+    for i in itemlist:
+        i.rend(listSurf, (2, h))
+        h += i.h
+
     screen.blit(listSurf, (135, 60))
     pygame.display.flip()
 
-def browse(startpath = "."):
+def __nav__(dir):
+    global itemlist
+    global curdir
+    curdir = dir
+    itemlist = []
+    for i in os.listdir(dir):
+        itemlist.append(listitem(i))
+
+def browse(startpath = "./"):
     global screen
     global listSurf
 
-    print(os.listdir())
+    __nav__(startpath)
 
     screen = pygame.display.get_surface()
 
