@@ -13,14 +13,20 @@ oico = pygame.image.load("fbico/other.png")
 
 class listitem():
     def __init__(self, file):
+        self.sel = False
         self.file = file
         self.h = font.size(self.file)[1]
         if os.path.isdir(curdir + file):
             self.type = "dir"
+            self.file += "/"
         else:
             self.type = file.split(".")[-1]
 
     def rend(self, surface, pos):
+        if self.sel:
+            r = pygame.Rect(pos, (surface.get_size()[0] - 4, self.h))
+            pygame.draw.rect(surface, (50, 50, 255), r)
+
         if self.type == "dir":
             surface.blit(fico, pos)
         elif self.type == "derg":
@@ -30,6 +36,19 @@ class listitem():
         else:
             surface.blit(oico, pos)
         surface.blit(font.render(self.file, True, (0, 0, 0)), (pos[0] + 18, pos[1] - 3))
+
+    def click(self, pos, cpos):
+        w = listSurf.get_size()[0] - 4
+        if ((cpos[0] >= pos[0]) and
+            (cpos[1] >= pos[1]) and
+            (cpos[0] <= (pos[0] + w)) and
+            (cpos[1] <= (pos[1] + self.h))):
+            if self.sel:
+                pass
+            else:
+                self.sel = True
+        else:
+            self.sel = False
 
 def __draw__():
     screen.fill((200, 200, 200))
@@ -48,7 +67,7 @@ def __nav__(dir):
     global curdir
     curdir = dir
     itemlist = []
-    for i in os.listdir(dir):
+    for i in ([".", ".."] + os.listdir(dir)):
         itemlist.append(listitem(i))
 
 def browse(startpath = "./"):
