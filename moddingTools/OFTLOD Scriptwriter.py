@@ -181,6 +181,7 @@ while True:
             if e.key in a:
                 for i in nodes:
                     i.navpress(e.key)
+            a = None
     else:
         pass
 
