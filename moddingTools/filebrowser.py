@@ -85,16 +85,17 @@ def browse(startpath = "./"):
 
     while True:
         e = pygame.event.wait()
-
-        if e.type == pygame.QUIT:
-            return(None)
-        elif e.type == pygame.WINDOWRESIZED:
-            size = [e.x, e.y]
-            if size[0] < 300:
-                size[0] = 300
-            if size[1] < 300:
-                size[1] = 300
-            screen = pygame.display.set_mode(size, pygame.RESIZABLE)
-            listSurf = pygame.Surface((size[0] - 155, size[1] - 120))
+        pygame.event.post(e)
+        for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                return(None)
+            elif e.type == pygame.WINDOWRESIZED:
+                size = [e.x, e.y]
+                if size[0] < 300:
+                    size[0] = 300
+                if size[1] < 300:
+                    size[1] = 300
+                screen = pygame.display.set_mode(size, pygame.RESIZABLE)
+                listSurf = pygame.Surface((size[0] - 155, size[1] - 120))
 
         __draw__()

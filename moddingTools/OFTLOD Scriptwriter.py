@@ -141,49 +141,51 @@ filebrowser.browse()
 while True:
     ui.spos = scrollpos
     e = pygame.event.wait()
-    if e.type == pygame.QUIT:
-        print("change da world\nmy final message. Goodb ye")
-        sys.exit(0)
-    elif e.type == pygame.WINDOWRESIZED:
-        size = [e.x, e.y]
-        if size[0] < 300:
-            size[0] = 300
-        if size[1] < 300:
-            size[1] = 300
-        screen = pygame.display.set_mode(size, pygame.RESIZABLE)
-    elif e.type == pygame.MOUSEBUTTONDOWN:
-        if e.button == 1:
-            if rclick:
+    pygame.event.post(e)
+    for e in pygame.event.get():
+        if e.type == pygame.QUIT:
+            print("change da world\nmy final message. Goodb ye")
+            sys.exit(0)
+        elif e.type == pygame.WINDOWRESIZED:
+            size = [e.x, e.y]
+            if size[0] < 300:
+                size[0] = 300
+            if size[1] < 300:
+                size[1] = 300
+            screen = pygame.display.set_mode(size, pygame.RESIZABLE)
+        elif e.type == pygame.MOUSEBUTTONDOWN:
+            if e.button == 1:
+                if rclick:
+                    rclick = False
+                    a = rclickMenu.click(rclickpos, e.pos)
+                    if not(a is False):
+                        nodes.append(rclickClasses[a]((rclickpos[0] - scrollpos[0], rclickpos[1] - scrollpos[1]), len(nodes)))
+                else:
+                    clickcheck(e)
+            elif e.button == 2:
                 rclick = False
-                a = rclickMenu.click(rclickpos, e.pos)
-                if not(a is False):
-                    nodes.append(rclickClasses[a]((rclickpos[0] - scrollpos[0], rclickpos[1] - scrollpos[1]), len(nodes)))
-            else:
-                clickcheck(e)
-        elif e.button == 2:
-            rclick = False
-            scroll = True
-            scrolltrack = e.pos
-            scrollhold = copy.copy(scrollpos)
-        elif e.button == 3:
-            rclick = True
-            rclickpos = e.pos
-    elif e.type == pygame.MOUSEBUTTONUP:
-        if e.button == 2:
-            rclick = False
-            scroll = False
-    elif e.type == pygame.KEYDOWN:
-        if not(e.unicode == ""):
-            for i in nodes:
-                i.keypress(e.unicode)
-        else:
-            a = (pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT)
-            if e.key in a:
+                scroll = True
+                scrolltrack = e.pos
+                scrollhold = copy.copy(scrollpos)
+            elif e.button == 3:
+                rclick = True
+                rclickpos = e.pos
+        elif e.type == pygame.MOUSEBUTTONUP:
+            if e.button == 2:
+                rclick = False
+                scroll = False
+        elif e.type == pygame.KEYDOWN:
+            if not(e.unicode == ""):
                 for i in nodes:
-                    i.navpress(e.key)
-            a = None
-    else:
-        pass
+                    i.keypress(e.unicode)
+            else:
+                a = (pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT)
+                if e.key in a:
+                    for i in nodes:
+                        i.navpress(e.key)
+                a = None
+        else:
+            pass
 
     if scroll:
         i = pygame.mouse.get_pos()
