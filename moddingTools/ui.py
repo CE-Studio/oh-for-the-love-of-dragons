@@ -577,7 +577,7 @@ class varVarStrNode(node):
         self.addPart(intBox("Str variable ID 1", "var1id"))
         self.addPart(intBox("Str variable ID 2", "var2id"))
         self.addPart(output("True", "target1", "nextType1"))
-        self.addPart(output("True", "target2", "nextType2"))
+        self.addPart(output("False", "target2", "nextType2"))
 
 class varVarIntNode(node):
     def populate(self):
@@ -586,7 +586,7 @@ class varVarIntNode(node):
         self.addPart(intBox("Int variable ID 1", "var1id"))
         self.addPart(intBox("Int variable ID 2", "var2id"))
         self.addPart(output("True", "target1", "nextType1"))
-        self.addPart(output("True", "target2", "nextType2"))
+        self.addPart(output("False", "target2", "nextType2"))
 
 class varVarFloatNode(node):
     def populate(self):
@@ -595,7 +595,7 @@ class varVarFloatNode(node):
         self.addPart(intBox("Float variable ID 1", "var1id"))
         self.addPart(intBox("Float variable ID 2", "var2id"))
         self.addPart(output("True", "target1", "nextType1"))
-        self.addPart(output("True", "target2", "nextType2"))
+        self.addPart(output("False", "target2", "nextType2"))
 
 class varVarBoolNode(node):
     def populate(self):
@@ -604,7 +604,7 @@ class varVarBoolNode(node):
         self.addPart(intBox("Bool variable ID 1", "var1id"))
         self.addPart(intBox("Bool variable ID 2", "var2id"))
         self.addPart(output("True", "target1", "nextType1"))
-        self.addPart(output("True", "target2", "nextType2"))
+        self.addPart(output("False", "target2", "nextType2"))
 
 class varVarInvNode(node):
     def populate(self):
@@ -613,7 +613,7 @@ class varVarInvNode(node):
         self.addPart(intBox("Slot ID 1", "var1id"))
         self.addPart(intBox("Slot ID 2", "var2id"))
         self.addPart(output("True", "target1", "nextType1"))
-        self.addPart(output("True", "target2", "nextType2"))
+        self.addPart(output("False", "target2", "nextType2"))
 
 class varValStrNode(node):
     def populate(self):
@@ -621,7 +621,7 @@ class varValStrNode(node):
         self.addPart(intBox("Str variable ID", "var"))
         self.addPart(textBox("Value", "value"))
         self.addPart(output("True", "target1", "nextType1"))
-        self.addPart(output("True", "target2", "nextType2"))
+        self.addPart(output("False", "target2", "nextType2"))
 
 class varValIntNode(node):
     def populate(self):
@@ -630,7 +630,7 @@ class varValIntNode(node):
         self.addPart(intBox("Int variable ID", "var"))
         self.addPart(intBox("Value", "value"))
         self.addPart(output("True", "target1", "nextType1"))
-        self.addPart(output("True", "target2", "nextType2"))
+        self.addPart(output("False", "target2", "nextType2"))
 
 class varValFloatNode(node):
     def populate(self):
@@ -639,7 +639,7 @@ class varValFloatNode(node):
         self.addPart(intBox("Float variable ID", "var"))
         self.addPart(floatBox("Value", "value"))
         self.addPart(output("True", "target1", "nextType1"))
-        self.addPart(output("True", "target2", "nextType2"))
+        self.addPart(output("False", "target2", "nextType2"))
 
 class varValBoolNode(node):
     def populate(self):
@@ -648,7 +648,7 @@ class varValBoolNode(node):
         self.addPart(intBox("Bool variable ID", "var"))
         self.addPart(boolBox("Value", "value"))
         self.addPart(output("True", "target1", "nextType1"))
-        self.addPart(output("True", "target2", "nextType2"))
+        self.addPart(output("False", "target2", "nextType2"))
 
 class varValInvNode(node):
     def populate(self):
@@ -657,7 +657,7 @@ class varValInvNode(node):
         self.addPart(intBox("Slot ID", "var"))
         self.addPart(textBox("Item", "value"))
         self.addPart(output("True", "target1", "nextType1"))
-        self.addPart(output("True", "target2", "nextType2"))
+        self.addPart(output("False", "target2", "nextType2"))
 
 class dayNode(node):
     def populate(self):
