@@ -70,7 +70,7 @@ def __nav__(dir):
     for i in ([".", ".."] + os.listdir(dir)):
         itemlist.append(listitem(i))
 
-def browse(startpath = "./"):
+def browse(startpath = "./", lookfor = ".derg"):
     global screen
     global listSurf
 
