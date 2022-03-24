@@ -102,10 +102,7 @@ def clickcheck(e):
         elif h == 2:
             pass
         elif h == 3:
-            for i in range(len(nodes)):
-                nodes[i].id = str(i)
-            for i in nodes:
-                i.compile()
+            compileNodes()
         return
     if connecting:
         for i in nodes:
@@ -135,6 +132,23 @@ def clickcheck(e):
                 connector = h
                 return
             j += 1
+
+def compileNodes(outpath = "./testExport", fancy = False):
+    lines = []
+    for i in range(len(nodes)):
+        nodes[i].id = str(i)
+    if fancy:
+        for i in nodes:
+            lines.append(i.compilef())
+    else:
+        for i in nodes:
+            lines.append(i.compile())
+
+    for i in range(len(lines)):
+        fname = outpath + "/" + str(i) + ".json"
+        f = open(fname, "w")
+        f.write(lines[i])
+        f.close()
 
 filebrowser.browse()
 
@@ -194,3 +208,4 @@ while True:
         scrollpos = (x, y)
 
     draw()
+

@@ -517,7 +517,13 @@ class node():
         data = {}
         for i in self.parts:
             i.compile(data)
-        print(json.dumps(data))
+        return(json.dumps(data))
+
+    def compilef(self):
+        data = {}
+        for i in self.parts:
+            i.compile(data)
+        return(json.dumps(data, indent = 4))
 
 class startNode(node):
     def populate(self):
