@@ -150,6 +150,11 @@ def compileNodes(outpath = "./testExport", fancy = False):
         f.write(lines[i])
         f.close()
 
+def fixedmove(key):
+    global nodes
+    for i in nodes:
+        i.navpress(key)
+
 filebrowser.browse()
 
 while True:
@@ -195,8 +200,7 @@ while True:
             else:
                 a = (pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT)
                 if e.key in a:
-                    for i in nodes:
-                        i.navpress(e.key)
+                    fixedmove(e.key)
                 a = None
         else:
             pass
