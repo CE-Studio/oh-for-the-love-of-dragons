@@ -32,6 +32,9 @@ class text():
 
     def compile(self, d):
         pass
+    
+    def decompile(self, d):
+        pass
 
 class button():
     def __init__(self, label, bcol = (120, 120, 120), fcol = (255, 255, 255), scol = (95, 159, 172), callback = None):
@@ -60,6 +63,9 @@ class button():
         pass
 
     def compile(self, d):
+        pass
+    
+    def decompile(self, d):
         pass
 
 class buttonGang():
@@ -98,6 +104,9 @@ class buttonGang():
 
     def compile(self, d):
         pass
+    
+    def decompile(self, d):
+        pass
 
 class menu():
     def __init__(self, options, bcol = (120, 120, 120), fcol = (255, 255, 255)):
@@ -131,9 +140,9 @@ class menu():
 class menubar():
     def __init__(self):
         self.menubutton = button("File") 
-        self.modeswitch = buttonGang(("Node Graph", "Playtest"))
+        self.modeswitch = buttonGang(("Node Graph", "Metadata Editor", "Playtest"))
         self.h = self.menubutton.h
-        self.menu = menu(("New", "Save", "Save As", "Complie and Export"))
+        self.menu = menu(("New", "Save", "Save As", "Complie and Export", "Open"))
         self.showmenu = False
 
     def rend(self, surface):
@@ -229,6 +238,9 @@ class output():
         else:
             d[str(self.obj)] = str(self.connectTo().id)
             d[str(self.obj2)] = str(self.connectTo().type)
+    
+    def decompile(self, dict):
+        self.pendingConnection = dict[str(self.obj)]
 
 class textBox():
     def __init__(self, label, obj, col = (255, 255, 255), bcol = (100, 100, 100), fcol = (255, 255, 255), scol = (60, 120, 120)):
@@ -293,6 +305,10 @@ class textBox():
 
     def compile(self, d):
         d[str(self.obj)] = self.content
+
+    def decompile(self, dict):
+        self.content = self.sanitize(dict[str(self.obj)])
+        self.text.text = str(self.content)
 
 class floatBox(textBox):
     def initcon(self):
@@ -399,6 +415,13 @@ class textList():
         for i in self.items:
             h.append(i.content)
         d[str(self.obj)] = h
+
+    def decompile(self, dict):
+        h = dict[str(self.obj)]
+        for i in h:
+            self.items.append(self.getblank())
+            self.items[-1].content = self.items[-1].sanitize(i)
+            self.items[-1].text.text = str(self.items[-1].content)
 
 class boolList(textList):
     def getblank(self):
@@ -525,6 +548,14 @@ class node():
             i.compile(data)
         return(json.dumps(data, indent = 4))
 
+    def saveData(self):
+        i = {"type":self.type, "data":self.compile(), "x":self.pos[0], "y":self.pos[1]}
+        return(json.dumps(i) + "\n")
+
+    def loadData(self, dict):
+        for i in self.parts:
+            i.decompile(dict)
+
 class startNode(node):
     def populate(self):
         self.type = "start"
@@ -623,6 +654,7 @@ class varVarInvNode(node):
 
 class varValStrNode(node):
     def populate(self):
+        self.type = "varvalstr"
         self.addPart(text("Var == Value (Str)"))
         self.addPart(intBox("Str variable ID", "var"))
         self.addPart(textBox("Value", "value"))

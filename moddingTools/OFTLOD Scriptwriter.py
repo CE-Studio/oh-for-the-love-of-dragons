@@ -60,6 +60,24 @@ rclickClasses = (ui.dialogueNode,
                  ui.musicNode,
                  ui.chapterNode)
 
+decompileDict = {"start":ui.startNode,
+                 "dia":ui.dialogueNode,
+                 "setvar":ui.setVarNode,             
+                 "varvarstr":ui.varVarStrNode,
+                 "varvarint":ui.varVarIntNode,
+                 "varvarflt":ui.varVarFloatNode,
+                 "varvarbol":ui.varVarBoolNode,
+                 "varvarinv":ui.varVarInvNode,
+                 "varvalstr":ui.varValStrNode,
+                 "varvalint":ui.varValIntNode,
+                 "varvalflt":ui.varValFloatNode,
+                 "varvalbol":ui.varValBoolNode,
+                 "varvalinv":ui.varValInvNode,
+                 "day":ui.dayNode,
+                 "scene":ui.sceneNode,
+                 "music":ui.musicNode,
+                 "chapter":ui.chapterNode}
+
 rclickMenu = ui.menu(rclickTitles)
 rclick = False
 rclickpos = (0, 0)
@@ -90,19 +108,25 @@ def draw():
 def clickcheck(e):
     global connecting
     global connector
+    global nodes
+    global scrollpos
 
     h = menu.click(e.pos, e.button)
     if not(h is False):
         if h is True:
             return
         if h == 0:
-            pass
+            nodes = [ui.startNode((10, 10), 0)]
+            scrollpos = (100, 100)
         elif h == 1:
-            pass
+            saveChapter()
         elif h == 2:
             pass
         elif h == 3:
             compileNodes()
+        elif h == 4:
+            loadChapter()
+            scrollpos = (100, 100)
         return
     if connecting:
         for i in nodes:
@@ -149,6 +173,35 @@ def compileNodes(outpath = "./testExport", fancy = False):
         f = open(fname, "w")
         f.write(lines[i])
         f.close()
+
+def saveChapter(outpath = "./testExport", name = "test"):
+    lines = []
+    for i in range(len(nodes)):
+        nodes[i].id = str(i)
+    for i in nodes:
+        lines.append(i.saveData())
+    fname = outpath + "/" + name + ".derg"
+    f = open(fname, "w")
+    f.writelines(lines)
+    f.close()
+
+def loadChapter(path = "./testExport/test.derg"):
+    global nodes
+    f = open(path, "r")
+    h = f.readlines()
+    nodes = []
+    for i in h:
+        j = json.loads(i)
+        nodes.append(decompileDict[j["type"]]((j["x"], j["y"]), len(nodes)))
+        k = json.loads(j["data"])
+        nodes[-1].loadData(k)
+    for i in nodes:
+        for h in i.parts:
+            if hasattr(h, "pendingConnection"):
+                if not(h.pendingConnection == "END"):
+                    h.connectTo = weakref.ref(nodes[int(h.pendingConnection)])
+            h.update()
+    f.close()
 
 def fixedmove(key):
     global nodes
