@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://d021js70q0g1b"]
+
+[ext_resource type="Script" path="res://nodeList.gd" id="1_wqt5x"]
+
+[node name="nodeList" type="PopupMenu"]
+size = Vector2i(28, 8)
+visible = true
+script = ExtResource("1_wqt5x")

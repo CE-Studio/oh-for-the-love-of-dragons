@@ -1,0 +1,202 @@
+[gd_scene format=3 uid="uid://cq47fd3qd23ka"]
+
+[node name="dialogue" type="GraphNode"]
+offset_right = 346.0
+offset_bottom = 285.0
+title = "Dialogue/choice"
+show_close = true
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = false
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = true
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
+slot/4/left_enabled = false
+slot/4/left_type = 0
+slot/4/left_color = Color(1, 1, 1, 1)
+slot/4/left_icon = null
+slot/4/right_enabled = false
+slot/4/right_type = 0
+slot/4/right_color = Color(1, 1, 1, 1)
+slot/4/right_icon = null
+slot/4/draw_stylebox = true
+slot/5/left_enabled = false
+slot/5/left_type = 0
+slot/5/left_color = Color(1, 1, 1, 1)
+slot/5/left_icon = null
+slot/5/right_enabled = false
+slot/5/right_type = 0
+slot/5/right_color = Color(1, 1, 1, 1)
+slot/5/right_icon = null
+slot/5/draw_stylebox = true
+slot/6/left_enabled = false
+slot/6/left_type = 0
+slot/6/left_color = Color(1, 1, 1, 1)
+slot/6/left_icon = null
+slot/6/right_enabled = true
+slot/6/right_type = 0
+slot/6/right_color = Color(1, 1, 1, 1)
+slot/6/right_icon = null
+slot/6/draw_stylebox = true
+slot/7/left_enabled = false
+slot/7/left_type = 0
+slot/7/left_color = Color(1, 1, 1, 1)
+slot/7/left_icon = null
+slot/7/right_enabled = true
+slot/7/right_type = 0
+slot/7/right_color = Color(1, 1, 1, 1)
+slot/7/right_icon = null
+slot/7/draw_stylebox = true
+slot/8/left_enabled = false
+slot/8/left_type = 0
+slot/8/left_color = Color(1, 1, 1, 1)
+slot/8/left_icon = null
+slot/8/right_enabled = true
+slot/8/right_type = 0
+slot/8/right_color = Color(1, 1, 1, 1)
+slot/8/right_icon = null
+slot/8/draw_stylebox = true
+slot/9/left_enabled = false
+slot/9/left_type = 0
+slot/9/left_color = Color(1, 1, 1, 1)
+slot/9/left_icon = null
+slot/9/right_enabled = true
+slot/9/right_type = 0
+slot/9/right_color = Color(1, 1, 1, 1)
+slot/9/right_icon = null
+slot/9/draw_stylebox = true
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+
+[node name="chartype" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="chartype"]
+layout_mode = 2
+text = "Character: "
+
+[node name="LineEdit" type="LineEdit" parent="chartype"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="animtype" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="animtype"]
+layout_mode = 2
+text = "Animation: "
+
+[node name="LineEdit" type="LineEdit" parent="animtype"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="timeout" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="timeout"]
+layout_mode = 2
+text = "Timeout: "
+
+[node name="SpinBox" type="SpinBox" parent="timeout"]
+layout_mode = 2
+size_flags_horizontal = 3
+allow_greater = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Dialouge:"
+
+[node name="TextEdit" type="TextEdit" parent="VBoxContainer"]
+custom_minimum_size = Vector2(1.45519e-11, 100)
+layout_mode = 2
+placeholder_text = "Type \"\\b\" to split lines across multiple
+boxes"
+
+[node name="question" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="question"]
+layout_mode = 2
+text = "Question: "
+
+[node name="LineEdit" type="LineEdit" parent="question"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="answerA" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="answerA"]
+layout_mode = 2
+text = "Answer A: "
+
+[node name="LineEdit" type="LineEdit" parent="answerA"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="answerB" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="answerB"]
+layout_mode = 2
+text = "Answer B: "
+
+[node name="LineEdit" type="LineEdit" parent="answerB"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="answerC" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="answerC"]
+layout_mode = 2
+text = "Answer C: "
+
+[node name="LineEdit" type="LineEdit" parent="answerC"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="answerD" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="answerD"]
+layout_mode = 2
+text = "Answer D: "
+
+[node name="LineEdit" type="LineEdit" parent="answerD"]
+layout_mode = 2
+size_flags_horizontal = 3

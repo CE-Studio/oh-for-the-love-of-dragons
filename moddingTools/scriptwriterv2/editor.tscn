@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=3 uid="uid://cpxwmtq14j40v"]
+
+[ext_resource type="Script" path="res://graph.gd" id="1_0eg1m"]
+[ext_resource type="PackedScene" uid="uid://c0nkqkfr8nnpr" path="res://startnode.tscn" id="2_f5xuj"]
+[ext_resource type="PackedScene" uid="uid://d021js70q0g1b" path="res://nodeList.tscn" id="3_j3cwt"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GraphEdit" type="GraphEdit" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+right_disconnects = true
+script = ExtResource("1_0eg1m")
+
+[node name="startnode" parent="VBoxContainer/GraphEdit" instance=ExtResource("2_f5xuj")]
+layout_mode = 0
+offset_left = 220.0
+offset_top = 232.0
+offset_right = 338.0
+offset_bottom = 264.0
+mouse_filter = 1
+position_offset = Vector2(220, 232)
+
+[node name="NodeList" parent="." instance=ExtResource("3_j3cwt")]
+
+[connection signal="popup_request" from="VBoxContainer/GraphEdit" to="VBoxContainer/GraphEdit" method="_on_popup_request"]
+[connection signal="id_pressed" from="NodeList" to="NodeList" method="_on_id_pressed"]
