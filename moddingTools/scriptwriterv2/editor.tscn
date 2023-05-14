@@ -12,30 +12,83 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="TabContainer" type="TabContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_vertical = 3
+tab_alignment = 2
 
-[node name="GraphEdit" type="GraphEdit" parent="VBoxContainer"]
+[node name="Graph" type="GraphEdit" parent="TabContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 right_disconnects = true
+scroll_offset = Vector2(-814, -384)
+arrange_nodes_button_hidden = true
 script = ExtResource("1_0eg1m")
 
-[node name="startnode" parent="VBoxContainer/GraphEdit" instance=ExtResource("2_f5xuj")]
+[node name="startnode" parent="TabContainer/Graph" instance=ExtResource("2_f5xuj")]
 layout_mode = 0
-offset_left = 220.0
-offset_top = 232.0
-offset_right = 338.0
-offset_bottom = 264.0
+offset_left = 1034.0
+offset_top = 616.0
+offset_right = 1152.0
+offset_bottom = 648.0
 mouse_filter = 1
 position_offset = Vector2(220, 232)
 
+[node name="Metadata Editor" type="Container" parent="TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Playtest" type="Container" parent="TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="MenuBar" type="MenuBar" parent="."]
+layout_mode = 0
+offset_right = 103.0
+offset_bottom = 40.0
+
+[node name="File" type="PopupMenu" parent="MenuBar"]
+title = "Save Backup"
+item_count = 6
+item_0/text = "New..."
+item_0/id = 1
+item_1/text = "Open..."
+item_1/id = 0
+item_2/text = ""
+item_2/id = 2
+item_2/separator = true
+item_3/text = "Save"
+item_3/id = 3
+item_4/text = "Save As..."
+item_4/id = 4
+item_5/text = "Save Backup..."
+item_5/id = 5
+
+[node name="Edit" type="PopupMenu" parent="MenuBar"]
+item_count = 5
+item_0/text = "Undo"
+item_0/id = 0
+item_1/text = "Redo"
+item_1/id = 1
+item_2/text = ""
+item_2/id = 2
+item_2/separator = true
+item_3/text = "Revert Changes Since Last Save"
+item_3/id = 3
+item_4/text = "Revert Changes This Session"
+item_4/id = 4
+
+[node name="Help" type="PopupMenu" parent="MenuBar"]
+item_count = 1
+item_0/text = "About..."
+item_0/id = 0
+
 [node name="NodeList" parent="." instance=ExtResource("3_j3cwt")]
 
-[connection signal="popup_request" from="VBoxContainer/GraphEdit" to="VBoxContainer/GraphEdit" method="_on_popup_request"]
+[connection signal="popup_request" from="TabContainer/Graph" to="TabContainer/Graph" method="_on_popup_request"]
 [connection signal="id_pressed" from="NodeList" to="NodeList" method="_on_id_pressed"]
