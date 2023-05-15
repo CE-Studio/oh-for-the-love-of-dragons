@@ -26,16 +26,15 @@ tab_alignment = 2
 layout_mode = 2
 size_flags_vertical = 3
 right_disconnects = true
-scroll_offset = Vector2(-814, -384)
 arrange_nodes_button_hidden = true
 script = ExtResource("1_0eg1m")
 
 [node name="startnode" parent="TabContainer/Graph" instance=ExtResource("2_f5xuj")]
 layout_mode = 0
-offset_left = 1034.0
-offset_top = 616.0
-offset_right = 1152.0
-offset_bottom = 648.0
+offset_left = 220.0
+offset_top = 232.0
+offset_right = 338.0
+offset_bottom = 264.0
 mouse_filter = 1
 position_offset = Vector2(220, 232)
 
@@ -90,5 +89,7 @@ item_0/id = 0
 
 [node name="NodeList" parent="." instance=ExtResource("3_j3cwt")]
 
+[connection signal="connection_request" from="TabContainer/Graph" to="TabContainer/Graph" method="_on_connection_request"]
+[connection signal="disconnection_request" from="TabContainer/Graph" to="TabContainer/Graph" method="_on_disconnection_request"]
 [connection signal="popup_request" from="TabContainer/Graph" to="TabContainer/Graph" method="_on_popup_request"]
 [connection signal="id_pressed" from="NodeList" to="NodeList" method="_on_id_pressed"]
