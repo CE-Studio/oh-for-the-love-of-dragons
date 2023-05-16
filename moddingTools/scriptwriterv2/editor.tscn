@@ -1,8 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://cpxwmtq14j40v"]
+[gd_scene load_steps=5 format=3 uid="uid://cpxwmtq14j40v"]
 
 [ext_resource type="Script" path="res://graph.gd" id="1_0eg1m"]
 [ext_resource type="PackedScene" uid="uid://c0nkqkfr8nnpr" path="res://startnode.tscn" id="2_f5xuj"]
 [ext_resource type="PackedScene" uid="uid://d021js70q0g1b" path="res://nodeList.tscn" id="3_j3cwt"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qlx2q"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -42,8 +50,72 @@ position_offset = Vector2(220, 232)
 visible = false
 layout_mode = 2
 
-[node name="Playtest" type="Container" parent="TabContainer"]
+[node name="Playtest" type="VBoxContainer" parent="TabContainer"]
 visible = false
+layout_mode = 2
+
+[node name="Container" type="Container" parent="TabContainer/Playtest"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Playtest"]
+custom_minimum_size = Vector2(1.45519e-11, 200)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qlx2q")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TabContainer/Playtest/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Test
+[url]{test}[/url]
+"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Playtest"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabContainer/Playtest/HBoxContainer"]
+layout_mode = 2
+text = "A:"
+
+[node name="Button" type="Button" parent="TabContainer/Playtest/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="TabContainer/Playtest"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabContainer/Playtest/HBoxContainer2"]
+layout_mode = 2
+text = "B:"
+
+[node name="Button" type="Button" parent="TabContainer/Playtest/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="TabContainer/Playtest"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabContainer/Playtest/HBoxContainer3"]
+layout_mode = 2
+text = "C:"
+
+[node name="Button" type="Button" parent="TabContainer/Playtest/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="TabContainer/Playtest"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabContainer/Playtest/HBoxContainer4"]
+layout_mode = 2
+text = "D:"
+
+[node name="Button" type="Button" parent="TabContainer/Playtest/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ProgressBar" type="ProgressBar" parent="TabContainer/Playtest"]
 layout_mode = 2
 
 [node name="MenuBar" type="MenuBar" parent="."]

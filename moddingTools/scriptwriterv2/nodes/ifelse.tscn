@@ -1,0 +1,82 @@
+[gd_scene load_steps=3 format=3 uid="uid://d227uti8r7gre"]
+
+[ext_resource type="Script" path="res://baseGraphNode.gd" id="1_d5jm1"]
+[ext_resource type="Script" path="res://nodes/scripts/menus/setvarOptionButton2.gd" id="2_vcfrm"]
+
+[node name="ifelse" type="GraphNode"]
+title = "If/else"
+show_close = true
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = true
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+script = ExtResource("1_d5jm1")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "If variable"
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer"]
+layout_mode = 2
+placeholder_text = "Name"
+expand_to_text_length = true
+
+[node name="OptionButton" type="OptionButton" parent="HBoxContainer"]
+layout_mode = 2
+item_count = 6
+selected = 0
+fit_to_longest_item = false
+popup/item_0/text = "=="
+popup/item_0/id = 0
+popup/item_1/text = ">="
+popup/item_1/id = 1
+popup/item_2/text = ">"
+popup/item_2/id = 3
+popup/item_3/text = "<="
+popup/item_3/id = 2
+popup/item_4/text = "<"
+popup/item_4/id = 4
+popup/item_5/text = "!="
+popup/item_5/id = 5
+
+[node name="OptionButton2" type="OptionButton" parent="HBoxContainer"]
+layout_mode = 2
+item_count = 2
+selected = 0
+fit_to_longest_item = false
+popup/item_0/text = "Value"
+popup/item_0/id = 0
+popup/item_1/text = "Variable"
+popup/item_1/id = 1
+script = ExtResource("2_vcfrm")
+
+[node name="LineEdit2" type="LineEdit" parent="HBoxContainer"]
+layout_mode = 2
+placeholder_text = "Value"
+
+[node name="Label2" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "then"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Else"
+
+[connection signal="item_selected" from="HBoxContainer/OptionButton2" to="HBoxContainer/OptionButton2" method="_on_item_selected"]

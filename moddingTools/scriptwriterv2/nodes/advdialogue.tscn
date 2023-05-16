@@ -30,7 +30,7 @@ slot/2/left_enabled = false
 slot/2/left_type = 0
 slot/2/left_color = Color(1, 1, 1, 1)
 slot/2/left_icon = null
-slot/2/right_enabled = false
+slot/2/right_enabled = true
 slot/2/right_type = 0
 slot/2/right_color = Color(1, 1, 1, 1)
 slot/2/right_icon = null
@@ -39,7 +39,7 @@ slot/3/left_enabled = false
 slot/3/left_type = 0
 slot/3/left_color = Color(1, 1, 1, 1)
 slot/3/left_icon = null
-slot/3/right_enabled = true
+slot/3/right_enabled = false
 slot/3/right_type = 0
 slot/3/right_color = Color(1, 1, 1, 1)
 slot/3/right_icon = null
@@ -57,7 +57,7 @@ slot/5/left_enabled = false
 slot/5/left_type = 0
 slot/5/left_color = Color(1, 1, 1, 1)
 slot/5/left_icon = null
-slot/5/right_enabled = false
+slot/5/right_enabled = true
 slot/5/right_type = 0
 slot/5/right_color = Color(1, 1, 1, 1)
 slot/5/right_icon = null
@@ -89,19 +89,7 @@ slot/8/right_type = 0
 slot/8/right_color = Color(1, 1, 1, 1)
 slot/8/right_icon = null
 slot/8/draw_stylebox = true
-slot/9/left_enabled = false
-slot/9/left_type = 0
-slot/9/left_color = Color(1, 1, 1, 1)
-slot/9/left_icon = null
-slot/9/right_enabled = true
-slot/9/right_type = 0
-slot/9/right_color = Color(1, 1, 1, 1)
-slot/9/right_icon = null
-slot/9/draw_stylebox = true
 script = ExtResource("1_335q1")
-
-[node name="Control" type="Control" parent="."]
-layout_mode = 2
 
 [node name="chartype" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -114,6 +102,8 @@ text = "Character: "
 [node name="LineEdit" type="LineEdit" parent="chartype"]
 layout_mode = 2
 size_flags_horizontal = 3
+caret_blink = true
+caret_blink_interval = 0.5
 
 [node name="animtype" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -126,6 +116,8 @@ text = "Animation: "
 [node name="LineEdit" type="LineEdit" parent="animtype"]
 layout_mode = 2
 size_flags_horizontal = 3
+caret_blink = true
+caret_blink_interval = 0.5
 
 [node name="timeout" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -164,6 +156,8 @@ text = "Question: "
 [node name="LineEdit" type="LineEdit" parent="question"]
 layout_mode = 2
 size_flags_horizontal = 3
+caret_blink = true
+caret_blink_interval = 0.5
 
 [node name="answerA" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -175,6 +169,8 @@ text = "Answer A: "
 [node name="LineEdit" type="LineEdit" parent="answerA"]
 layout_mode = 2
 size_flags_horizontal = 3
+caret_blink = true
+caret_blink_interval = 0.5
 
 [node name="answerB" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -186,6 +182,8 @@ text = "Answer B: "
 [node name="LineEdit" type="LineEdit" parent="answerB"]
 layout_mode = 2
 size_flags_horizontal = 3
+caret_blink = true
+caret_blink_interval = 0.5
 
 [node name="answerC" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -197,6 +195,8 @@ text = "Answer C: "
 [node name="LineEdit" type="LineEdit" parent="answerC"]
 layout_mode = 2
 size_flags_horizontal = 3
+caret_blink = true
+caret_blink_interval = 0.5
 
 [node name="answerD" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -208,3 +208,5 @@ text = "Answer D: "
 [node name="LineEdit" type="LineEdit" parent="answerD"]
 layout_mode = 2
 size_flags_horizontal = 3
+caret_blink = true
+caret_blink_interval = 0.5
