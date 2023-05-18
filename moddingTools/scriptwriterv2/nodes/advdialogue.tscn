@@ -143,8 +143,8 @@ text = "Dialouge:"
 [node name="TextEdit" type="TextEdit" parent="VBoxContainer"]
 custom_minimum_size = Vector2(1.45519e-11, 100)
 layout_mode = 2
-placeholder_text = "Type \"\\b\" to split lines across multiple
-boxes"
+placeholder_text = "Type \"\\b\" to split lines across
+multiple boxes"
 
 [node name="question" type="HBoxContainer" parent="."]
 layout_mode = 2

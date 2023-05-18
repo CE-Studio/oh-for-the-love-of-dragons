@@ -45,6 +45,7 @@ text = "Character: "
 [node name="LineEdit" type="LineEdit" parent="chartype"]
 layout_mode = 2
 size_flags_horizontal = 3
+expand_to_text_length = true
 caret_blink = true
 caret_blink_interval = 0.5
 
@@ -59,6 +60,7 @@ text = "Animation: "
 [node name="LineEdit" type="LineEdit" parent="animtype"]
 layout_mode = 2
 size_flags_horizontal = 3
+expand_to_text_length = true
 caret_blink = true
 caret_blink_interval = 0.5
 
@@ -72,5 +74,6 @@ text = "Line: "
 [node name="LineEdit" type="LineEdit" parent="line"]
 layout_mode = 2
 size_flags_horizontal = 3
+expand_to_text_length = true
 caret_blink = true
 caret_blink_interval = 0.5

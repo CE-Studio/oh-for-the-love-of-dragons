@@ -12,8 +12,8 @@ func _process(delta):
 
 
 func _on_popup_request(position):
-    $"../../NodeList".position = position
-    $"../../NodeList".visible = true
+    $"../../../NodeList".position = position
+    $"../../../NodeList".visible = true
     
     
 func reposition(i:GraphNode):

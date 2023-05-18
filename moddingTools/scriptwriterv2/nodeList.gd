@@ -10,6 +10,6 @@ func _ready():
 
 func _on_id_pressed(id):
     var h:GraphNode = NodeManager.nodes[id].instantiate()
-    var p = $"../TabContainer/Graph".scroll_offset
-    $"../TabContainer/Graph".add_child(h)
-    $"../TabContainer/Graph".reposition(h)
+    var p = $"../TabContainer/Graph/Graph".scroll_offset
+    $"../TabContainer/Graph/Graph".add_child(h)
+    $"../TabContainer/Graph/Graph".reposition(h)
