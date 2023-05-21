@@ -1,0 +1,178 @@
+[gd_scene load_steps=2 format=3 uid="uid://w8cocvpen1l8"]
+
+[ext_resource type="Script" path="res://baseGraphNode.gd" id="1_6uulr"]
+
+[node name="day" type="GraphNode"]
+title = "Day transition"
+show_close = true
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = false
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
+slot/4/left_enabled = false
+slot/4/left_type = 0
+slot/4/left_color = Color(1, 1, 1, 1)
+slot/4/left_icon = null
+slot/4/right_enabled = false
+slot/4/right_type = 0
+slot/4/right_color = Color(1, 1, 1, 1)
+slot/4/right_icon = null
+slot/4/draw_stylebox = true
+slot/5/left_enabled = false
+slot/5/left_type = 0
+slot/5/left_color = Color(1, 1, 1, 1)
+slot/5/left_icon = null
+slot/5/right_enabled = false
+slot/5/right_type = 0
+slot/5/right_color = Color(1, 1, 1, 1)
+slot/5/right_icon = null
+slot/5/draw_stylebox = true
+slot/6/left_enabled = false
+slot/6/left_type = 0
+slot/6/left_color = Color(1, 1, 1, 1)
+slot/6/left_icon = null
+slot/6/right_enabled = true
+slot/6/right_type = 0
+slot/6/right_color = Color(1, 1, 1, 1)
+slot/6/right_icon = null
+slot/6/draw_stylebox = true
+script = ExtResource("1_6uulr")
+
+[node name="CheckBox" type="CheckButton" parent="."]
+layout_mode = 2
+text = "Play cutscene"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "Title:"
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer2"]
+layout_mode = 2
+text = "Subtitle:"
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer3"]
+layout_mode = 2
+text = "Weather:"
+
+[node name="OptionButton" type="OptionButton" parent="HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+item_count = 4
+selected = 0
+popup/item_0/text = "Clear"
+popup/item_0/id = 0
+popup/item_1/text = "Cloudy"
+popup/item_1/id = 1
+popup/item_2/text = "Rain/snow"
+popup/item_2/id = 2
+popup/item_3/text = "Thunderstorm"
+popup/item_3/id = 3
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer4"]
+layout_mode = 2
+text = "Season:"
+
+[node name="OptionButton" type="OptionButton" parent="HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+item_count = 4
+selected = 0
+popup/item_0/text = "Spring"
+popup/item_0/id = 0
+popup/item_1/text = "Summer"
+popup/item_1/id = 1
+popup/item_2/text = "Fall"
+popup/item_2/id = 2
+popup/item_3/text = "Winter"
+popup/item_3/id = 3
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer5"]
+layout_mode = 2
+text = "Time:"
+
+[node name="SpinBox" type="SpinBox" parent="HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.5
+max_value = 12.0
+step = 0.5
+value = 1.0
+alignment = 2
+
+[node name="OptionButton" type="OptionButton" parent="HBoxContainer5"]
+layout_mode = 2
+item_count = 2
+selected = 0
+popup/item_0/text = "AM"
+popup/item_0/id = 0
+popup/item_1/text = "PM"
+popup/item_1/id = 1
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer6"]
+layout_mode = 2
+text = "Day:"
+
+[node name="SpinBox" type="SpinBox" parent="HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 3
+value = 1.0
+rounded = true
+allow_greater = true

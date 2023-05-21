@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://d33m5nwqkrqnl"]
+
+[ext_resource type="Script" path="res://nodes/scripts/character.gd" id="1_haduu"]
+[ext_resource type="Texture2D" uid="uid://bat1mu5eohuar" path="res://ArrowLeft.svg" id="2_noa0a"]
+[ext_resource type="StyleBox" uid="uid://mtrdfxq6lxmy" path="res://bettereditstylepressed.tres" id="2_rhrbq"]
+[ext_resource type="Texture2D" uid="uid://cl3asg6h4vx6v" path="res://ArrowRight.svg" id="3_qgy04"]
+
+[node name="character" type="HBoxContainer"]
+offset_right = 125.0
+offset_bottom = 31.0
+script = ExtResource("1_haduu")
+
+[node name="LineEdit" type="LineEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Name"
+expand_to_text_length = true
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 2
+theme_override_colors/icon_normal_color = Color(0.509804, 0.509804, 0.509804, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 1, 1)
+theme_override_styles/disabled = ExtResource("2_rhrbq")
+icon = ExtResource("2_noa0a")
+
+[node name="Button2" type="Button" parent="."]
+layout_mode = 2
+theme_override_colors/icon_normal_color = Color(0.509804, 0.509804, 0.509804, 1)
+theme_override_colors/icon_disabled_color = Color(1, 1, 1, 1)
+theme_override_styles/disabled = ExtResource("2_rhrbq")
+disabled = true
+toggle_mode = true
+icon = ExtResource("3_qgy04")
+
+[connection signal="pressed" from="Button" to="." method="_on_button1_pressed"]
+[connection signal="pressed" from="Button2" to="." method="_on_button2_pressed"]

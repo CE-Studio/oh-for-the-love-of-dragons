@@ -1,0 +1,98 @@
+[gd_scene load_steps=6 format=3 uid="uid://sbcyfviwf4mr"]
+
+[ext_resource type="Script" path="res://nodes/scripts/scene.gd" id="1_vwjpn"]
+[ext_resource type="Texture2D" uid="uid://bo33ddmw4d3lo" path="res://Add.svg" id="2_xemcr"]
+[ext_resource type="Texture2D" uid="uid://c7g7xn84fd31j" path="res://Remove.svg" id="3_buvvn"]
+[ext_resource type="PackedScene" uid="uid://d33m5nwqkrqnl" path="res://nodes/scripts/character.tscn" id="4_h6b3k"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d2xca"]
+bg_color = Color(0.286275, 0.286275, 0.286275, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="scene" type="GraphNode"]
+title = "Scene transition"
+show_close = true
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = false
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = true
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+script = ExtResource("1_vwjpn")
+
+[node name="CheckButton" type="CheckButton" parent="."]
+layout_mode = 2
+text = "Play cutscene"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "Scene:"
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Name"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Characters:"
+
+[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+icon = ExtResource("2_xemcr")
+
+[node name="Button2" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+icon = ExtResource("3_buvvn")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Control" type="Panel" parent="VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(2, 1.45519e-11)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_d2xca")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="character" parent="VBoxContainer/HBoxContainer2/VBoxContainer" instance=ExtResource("4_h6b3k")]
+layout_mode = 2
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Button" to="." method="_on_char_add"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Button2" to="." method="_on_char_remove"]

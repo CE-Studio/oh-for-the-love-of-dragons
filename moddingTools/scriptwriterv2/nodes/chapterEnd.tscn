@@ -55,5 +55,6 @@ text = "Chapter:"
 
 [node name="LineEdit" type="LineEdit" parent="HBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
 placeholder_text = "Name"
 expand_to_text_length = true
