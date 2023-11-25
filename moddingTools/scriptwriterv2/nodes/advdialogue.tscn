@@ -7,7 +7,6 @@ offset_right = 346.0
 offset_bottom = 285.0
 mouse_filter = 1
 title = "Advanced Dialogue/choice"
-show_close = true
 slot/0/left_enabled = true
 slot/0/left_type = 0
 slot/0/left_color = Color(1, 1, 1, 1)

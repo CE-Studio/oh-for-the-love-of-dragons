@@ -42,7 +42,7 @@ func verify():
 
 func _on_connection_request(from_node:StringName, from_port:int, to_node:StringName, to_port:int):
     for i in get_connection_list():
-        if (i.from == from_node) and (from_port == i.from_port):
+        if (i.from_node == from_node) and (from_port == i.from_port):
             return
     connect_node(from_node, from_port, to_node, to_port)
     verify()
