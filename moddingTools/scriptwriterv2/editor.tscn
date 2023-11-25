@@ -54,7 +54,7 @@ position_offset = Vector2(220, 232)
 
 [node name="Button" type="Button" parent="TabContainer/Graph"]
 layout_mode = 2
-text = "No Errors"
+text = "No errors"
 icon = ExtResource("4_kitej")
 alignment = 0
 
