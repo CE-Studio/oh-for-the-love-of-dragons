@@ -1,30 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://c0nkqkfr8nnpr"]
+[gd_scene load_steps=2 format=3 uid="uid://c0nkqkfr8nnpr"]
 
 [ext_resource type="Script" path="res://startnode.gd" id="1_241lm"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p5bkh"]
-content_margin_left = 5.0
-content_margin_top = 16.0
-content_margin_right = 9.0
-content_margin_bottom = 16.0
-bg_color = Color(0, 0.388235, 0, 1)
-expand_margin_top = 12.0
-expand_margin_bottom = 12.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iqibw"]
-content_margin_left = 5.0
-content_margin_top = 16.0
-content_margin_right = 9.0
-content_margin_bottom = 16.0
-bg_color = Color(0, 0.501961, 0, 1)
-expand_margin_top = 12.0
-expand_margin_bottom = 12.0
-
 [node name="startnode" type="GraphNode"]
-theme_override_colors/title_color = Color(1, 1, 1, 1)
-theme_override_colors/close_color = Color(0, 0, 0, 1)
-theme_override_styles/frame = SubResource("StyleBoxFlat_p5bkh")
-theme_override_styles/selected_frame = SubResource("StyleBoxFlat_iqibw")
 title = "Chapter Start"
 slot/0/left_enabled = false
 slot/0/left_type = 0
@@ -36,6 +14,7 @@ slot/0/right_color = Color(1, 1, 1, 1)
 slot/0/right_icon = null
 slot/0/draw_stylebox = true
 script = ExtResource("1_241lm")
+canClose = false
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 2

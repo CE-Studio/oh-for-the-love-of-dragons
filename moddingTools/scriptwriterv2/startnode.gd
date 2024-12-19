@@ -1,4 +1,4 @@
 extends BaseGraphNode
 
 func verify():
-    return ["ok"]
+	return ["ok"]

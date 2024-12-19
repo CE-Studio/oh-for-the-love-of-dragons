@@ -18,6 +18,7 @@ expand_to_text_length = true
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 2
+tooltip_text = "Show character on left"
 theme_override_colors/icon_normal_color = Color(0.509804, 0.509804, 0.509804, 1)
 theme_override_colors/icon_disabled_color = Color(1, 1, 1, 1)
 theme_override_styles/disabled = ExtResource("2_rhrbq")
@@ -25,6 +26,7 @@ icon = ExtResource("2_noa0a")
 
 [node name="Button2" type="Button" parent="."]
 layout_mode = 2
+tooltip_text = "Show character on right"
 theme_override_colors/icon_normal_color = Color(0.509804, 0.509804, 0.509804, 1)
 theme_override_colors/icon_disabled_color = Color(1, 1, 1, 1)
 theme_override_styles/disabled = ExtResource("2_rhrbq")
