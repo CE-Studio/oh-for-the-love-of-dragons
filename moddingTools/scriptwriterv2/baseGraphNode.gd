@@ -2,7 +2,7 @@ extends GraphNode
 class_name BaseGraphNode
 
 
-var connectedTo = {}
+var connectedTo:Array[BaseGraphNode] = []
 @export var canClose := true
 
 
@@ -12,6 +12,7 @@ func _ready():
 		var b := Button.new()
 		get_titlebar_hbox().add_child(b)
 		b.pressed.connect(_close)
+	connectedTo.resize(get_output_port_count())
 
 
 func _close():

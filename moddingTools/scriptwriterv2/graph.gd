@@ -39,6 +39,9 @@ func verify():
 				break
 	$"../Button".text = stat[1]
 	$"../Button".icon = _errorico[stat[0]]
+	for i in get_connection_list():
+		var n:BaseGraphNode = get_node(NodePath(i["from_node"]))
+		n.connectedTo[i["from_port"]] = get_node(NodePath(i["to_node"]))
 
 
 func _on_connection_request(from_node:StringName, from_port:int, to_node:StringName, to_port:int):
